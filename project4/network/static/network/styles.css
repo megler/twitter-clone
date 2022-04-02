@@ -1,0 +1,450 @@
+/* CSS Twitter Layout Credit (some modifications have been done): https://github.com/jvadillo/twitter-bootstrap */
+body {   
+    padding-top: 54px;      
+    background-color: #e6ecf0;
+  }
+
+  .all-tweets {
+    background-color: #e6ecf0;
+  }
+  /* Photo by Engin Akyurt from Pexels: https://www.pexels.com/photo/several-soaring-seagulls-1435849/ */
+  .all-tweets::before {    
+    content: "";
+    background: url('https://images.pexels.com/photos/1435849/pexels-photo-1435849.jpeg?cs=srgb&dl=pexels-engin-akyurt-1435849.jpg&fm=jpg');
+    background-size: cover;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    opacity: 0.4;
+}
+
+
+
+  a {
+    color: #1DA1F2;
+  }
+  
+  @media screen and (min-width: 1236px) {
+    .container {
+      width: 1190px;
+    }
+  }
+  /* Top Navbar elements' styles */
+  .navbar {
+    background-color: #fff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  }
+  .navbar-nav > li a {
+    color: #66757f;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  .input-search {
+    font-size: 13px;
+  }
+  
+  .input-search, .btn-search {
+    background-color: #f5f8fa;
+    border-radius: 21px;
+    border: 1px solid #e6ecf0;
+  }
+  .btn-search {
+    background-color: #fff;
+  }
+  
+  .navbar-search-icon {
+    color: #66757f;
+  }
+  
+  .btn-circle {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    background-image: url(https://pbs.twimg.com/profile_images/679974972278849537/bzzb-6H4_normal.jpg);
+  }
+  
+  .btn-search-bar {
+    border-radius: 100px;
+    border: 1px solid #1da1f2;
+    color: #fff;
+    background-color: #4AB3F4;
+    border-color: transparent;
+    font-weight: bold;
+    font-size: 14px;
+  }
+  
+  .btn-search-bar:hover{
+        background-color: #1DA1F2;
+      border-color: #1DA1F2;
+    cursor:pointer;
+  }
+  
+  .navbar-form {
+    margin-right: 15px;
+  }
+  
+  .navbar-user-dropdown {
+    margin-right: 15px;
+  }
+  /* END: Top Navbar elements' styles */
+  
+  .profile-background {
+    height: 320px;
+    background-image: url('https://pbs.twimg.com/profile_banners/439335622/1496682615/1500x500');
+  }
+  
+  /* Main avatar */
+  .avatar-container {
+    bottom: -87px;
+    left: 10px;
+    position: absolute;
+    transition: bottom .3s;
+    z-index: 3;
+  }
+  
+  /* photo credit: Photo by Pixabay from Pexels: https://www.pexels.com/photo/ostrich-face-during-daytime-160977/ */
+  .avatar {
+    background: #fff;
+    background-image: url(https://images.pexels.com/photos/160977/rhea-bird-bouquet-head-bird-160977.jpeg?cs=srgb&dl=pexels-pixabay-160977.jpg&fm=jpg);
+    background-size: cover;
+    background-position: top center;
+    border: 5px solid #fff;
+    border-radius: 50%;
+    height: 200px;
+    position: relative;
+    width: 200px;
+  }  
+  
+  /* END: Main avatar */
+  
+  /* Stats Navbar elements' styles */
+  .profile-stats {
+    background-color: #fff;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  
+  .profile-stats ul {
+    margin: 0;
+    list-style: none;
+    padding: 0;
+  }
+  
+  .profile-stats li {
+    display: inline-block;
+  }
+  
+  .profile-stats a {
+    padding: 10px 16px;
+    display: block;
+    text-align: center;
+  }
+  
+  .profile-stats-item {
+    color: #657786;
+    display: block;
+  }
+  
+  .profile-stats-item-active {
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+    border-color: #1DA1F2 !important;
+  }
+  
+  .profile-stats-item-label {
+    font-size: 12px;
+    font-weight: bold;
+  }
+  
+  .profile-stats-item-number {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  /* END: Stats Navbar elements' styles */
+  
+  /* Main content elements' styles */
+  
+  /* Left column*/
+  .profile-header {
+    margin-top: 35px;
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+  
+  .profile-element {
+    color: #657786;
+    display: block;
+    font-size: 14px;
+    margin-top: 12px;
+  }
+  .profile-fullname {
+    color: #000;
+  }
+  
+  .profile-website {
+    color: #1DA1F2 !important;
+    cursor: pointer;
+  }
+  
+  .profile-website:hover {
+    text-decoration: underline !important;
+  }
+  
+  .tweet-to-btn {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    width:100%;
+  }
+  /* END: Left column*/
+  
+  /* Main column*/
+
+  .tweet-list {
+    list-style: none;
+    margin: 8px 4px 0;
+    padding: 0;
+  }
+  .tweet-card {
+    background-color: #fff;
+    border-bottom: 1px solid #e6ecf0;
+    min-height: 52px;
+    padding: 9px 12px;
+  }
+  
+  .tweet-content {
+    margin-left: 58px;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: normal;
+  }
+  .tweet-card-avatar {
+    border-radius: 50%;
+    height: 48px;
+    width: 48px;
+    float: left;
+    margin-top: 3px;
+    margin-left: -58px;
+  }
+  
+  .tweet-footer-btn {
+    margin-right: 30px;
+  }
+  .tweet-footer-btn i, .tweet-footer-btn span {
+    color: #657786;
+    font-size: 16px;
+  }
+  .tweet-footer-btn span {
+    margin-left: 8px;
+  }
+  /* END Main column*/
+  
+  /* Right column*/
+  .pic-col {
+    margin: 2px;
+    padding: 2px;
+  }
+  
+  .right-col {
+    padding-left: 0;
+  }
+  .content-panel {
+    margin: 10px 0 0;
+    background-color: #fff;
+    line-height: 16px;
+    padding: 15px;
+  }
+  
+  .content-panel h4 {
+    display: inline-block;
+  }
+  
+  .content-panel small {
+    font-size: 66%;
+    margin-left: 6px;
+  }
+  
+  .content-panel li {
+    min-height: 70px;
+  }
+  
+  .btn-follow {
+    border-color: #1DA1F2;
+    color: #1DA1F2;
+    background-color: #fff;
+    border: 1px solid #1da1f2;
+    display: block;
+    font-size: 12px;
+    line-height: 16px;
+    padding: 4px 12px;
+    border-radius: 100px;
+    box-shadow: none;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
+    min-width: 89px;
+  }
+  
+  .btn-follow:hover {
+    background-color: #E8F5FD;
+  }
+  /* END: Right column*/
+  
+  /* END: Main content elements' styles */
+
+  /* BEGIN TWEET BOX STYLES -- CREDIT: https://www.codingnepalweb.com/tweet-box-character-limit-highlighting-javascript/*/
+  @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+
+::selection{
+  color: #fff;
+  background: #1da1f2;
+}
+.wrapper{
+  margin-top: 7px;
+  background: #fff;  
+  width: 100%;
+  border-radius: 15px;
+  padding: 15px;
+  box-shadow: 0px 10px 15px rgba(0,0,0,0.1);
+}
+.input-box{
+  padding-top: 10px;
+  border-bottom: 1px solid #e6e6e6;
+}
+.input-box .tweet-area{
+  position: relative;
+  min-height: 130px;
+  max-height: 170px;
+  overflow-y: auto;
+}
+.tweet-area::-webkit-scrollbar{
+  width: 0px;
+}
+.tweet-area .placeholder{
+  position: absolute;
+  margin-top: -3px;
+  font-size: 22px;
+  color: #98A5B1;
+  pointer-events: none;
+}
+.tweet-area .input{
+  outline: none;
+  font-size: 17px;
+  min-height: inherit;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+.tweet-area .editable{
+  position: relative;
+  z-index: 5;
+}
+.tweet-area .readonly{
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  color: transparent;
+  background: transparent;
+}
+.readonly .highlight{
+  background: #fd9bb0;
+}
+.input-box .privacy{
+  color: #1da1f2;
+  margin: 15px 0;
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 10px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.privacy:hover, .icons li:hover{
+  background: #e7f5fe;
+}
+.privacy i{
+  font-size: 18px;
+}
+.privacy span{
+  font-size: 15px;
+  font-weight: 600;
+  margin-left: 7px;
+}
+.bottom{
+  display: flex;
+  margin-top: 13px;
+  align-items: center;
+  justify-content: space-between;
+}
+.bottom .icons{
+  display: inline-flex;
+}
+.icons li{
+  list-style: none;
+  color: #1da1f2;
+  font-size: 20px;
+  margin: 0 2px;
+  height: 38px;
+  width: 38px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.2s ease;
+}
+.bottom .content{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bottom .counter{
+  color: #333;  
+  font-weight: 500;
+  margin-right: 15px;
+  padding-right: 15px;
+  border-right: 1px solid #aab8c2;
+}
+.bottom button{
+  padding: 9px 18px;
+  border: none;
+  outline: none;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 700;
+  background: #1da1f2;
+  color: #fff;
+  cursor: pointer;
+}
+
+.bottom button:hover{
+  background: #0d8bd9;
+}
+
+/* BEGIN CUSTOM STYLES: */
+
+.content small {
+  font-size: 66%;
+  margin-left: 6px;
+  text-decoration: none;
+}
+
+.content small a:hover {
+  text-decoration: none;
+}
+    
+.toggleBox {  
+  transition: height .5s ease;
+  overflow  : hidden;
+ }
+
+.toggleBox:not(.active) { 
+  display: none;
+}
+
+.middle-bar {
+  height: 4rem;
+}

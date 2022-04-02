@@ -1,0 +1,81 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  {# Template Credit: https://github.com/jvadillo/twitter-bootstrap #}
+
+  <head>
+    <title>
+      {% block title %}Social Network{% endblock %}
+    </title>
+    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css'>
+    <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
+    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/octicons/4.4.0/font/octicons.min.css'>
+    <link href="{% static 'network/styles.css' %}" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <!-- Fixed top navbar -->
+    <nav class="navbar navbar-toggleable-md fixed-top">
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse container">
+        <!-- Navbar navigation links -->
+        <ul class="navbar-nav mr-auto">
+          {% if user.is_authenticated %}
+            <li class="nav-item active">
+              <a class="nav-link" href="/">
+                <i class="octicon octicon-home" aria-hidden="true"></i>
+                {{ user.username }}
+                <span class="sr-only">(current)</span></a>
+            </li>
+          {% endif %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'all_posts' %}">
+              <i class="octicon octicon-zap"></i>
+              All Posts</a>
+          </li>
+          {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <i class="octicon octicon-bell"></i>
+                Following</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'logout' %}">
+                <i class="octicon octicon-inbox"></i>
+                Logout</a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'login' %}">
+                <i class="octicon octicon-inbox"></i>
+                Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'register' %}">
+                <i class="octicon octicon-inbox"></i>
+                Register</a>
+            </li>
+          {% endif %}
+        </ul>
+        <!-- END: Navbar navigation links -->
+        <!-- Navbar Tweet button -->
+        <button class="btn btn-search-bar toggle">Write Tweet</button>
+      </div>
+    </nav>
+    <!-- END: Fixed top navbar -->
+
+    <div class="body">
+      {% block body %}{% endblock %}
+    </div>
+    <script src='https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/js/bootstrap.min.js'></script>
+    <script src="{% static 'network/scripts.js' %}" rel="stylesheet"></script>
+  </body>
+
+</html>
