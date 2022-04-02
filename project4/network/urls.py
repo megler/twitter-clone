@@ -8,5 +8,5 @@ urlpatterns = [
     path("logout", views.logout_view, name="logout"),
     path("register", views.register, name="register"),
     # API
-    path("all-tweets", views.all_posts, name="all_posts"),
+    path("my-tweets/<int:pk>", views.my_tweets, name="my_tweets"),
 ]

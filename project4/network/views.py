@@ -5,11 +5,12 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User, Post, Follower, Like
+from .models import User, Post, Follower, Like, Profile
 
 
 def index(request):
-    return render(request, "network/index.html")
+    posts = Post.objects.all()
+    return render(request, "network/index.html", {"posts": posts})
 
 
 def login_view(request):
@@ -43,7 +44,7 @@ def register(request):
     if request.method == "POST":
         username = request.POST["username"]
         email = request.POST["email"]
-
+        first_name = request.POST["first_name"]
         # Ensure password matches confirmation
         password = request.POST["password"]
         confirmation = request.POST["confirmation"]
@@ -53,7 +54,14 @@ def register(request):
 
         # Attempt to create new user
         try:
-            user = User.objects.create_user(username, email, password)
+            user = User.objects.create_user(username,
+                                            email,
+                                            password,
+                                            first_name=first_name)
+            user.save()
+            # Save userinfo record
+            user = User.objects.get(pk=user.id)
+            user.profile.background_image = request.POST["background_img"]
             user.save()
         except IntegrityError:
             return render(request, "network/register.html",
@@ -64,10 +72,14 @@ def register(request):
         return render(request, "network/register.html")
 
 
-def all_posts(request):
-    posts = Post.objects.all()
+def my_tweets(request, pk):
+    tweets = Post.objects.filter(id=pk)
+    user = User.objects.get(pk=pk)
     return render(
         request,
-        "network/all-tweets.html",
-        {"posts": posts},
+        "network/my-tweets.html",
+        {
+            "posts": tweets,
+            "user": user
+        },
     )
