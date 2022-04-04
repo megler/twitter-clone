@@ -4,16 +4,17 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
-
+from .util import *
 from .models import User, Post, Follower, Like, Profile
 
 
 def index(request):
-    posts = Post.objects.all()
-
+    """When visiting homepage, if user auth, then show user's tweets else
+    show all tweets"""
     if request.user.is_authenticated:
         pk = request.user.id
         tweets = Post.objects.filter(id=pk)
+        tweets = sort_tweets(tweets)
         user = User.objects.get(pk=pk)
         return render(
             request,
@@ -24,7 +25,7 @@ def index(request):
             },
         )
     if not request.user.is_authenticated:
-        return render(request, "network/index.html", {"posts": posts})
+        return HttpResponseRedirect(reverse("all_tweets"))
 
 
 def login_view(request):
@@ -88,4 +89,5 @@ def register(request):
 
 def all_tweets(request):
     tweets = Post.objects.all()
+    tweets = sort_tweets(tweets)
     return render(request, "network/index.html", {"posts": tweets})
