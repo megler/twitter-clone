@@ -10,7 +10,21 @@ from .models import User, Post, Follower, Like, Profile
 
 def index(request):
     posts = Post.objects.all()
-    return render(request, "network/index.html", {"posts": posts})
+
+    if request.user.is_authenticated:
+        pk = request.user.id
+        tweets = Post.objects.filter(id=pk)
+        user = User.objects.get(pk=pk)
+        return render(
+            request,
+            "network/index.html",
+            {
+                "posts": tweets,
+                "user": user
+            },
+        )
+    if not request.user.is_authenticated:
+        return render(request, "network/index.html", {"posts": posts})
 
 
 def login_view(request):
@@ -70,16 +84,3 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/register.html")
-
-
-def my_tweets(request, pk):
-    tweets = Post.objects.filter(id=pk)
-    user = User.objects.get(pk=pk)
-    return render(
-        request,
-        "network/my-tweets.html",
-        {
-            "posts": tweets,
-            "user": user
-        },
-    )
