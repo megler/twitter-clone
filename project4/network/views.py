@@ -84,3 +84,8 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/register.html")
+
+
+def all_tweets(request):
+    tweets = Post.objects.all()
+    return render(request, "network/index.html", {"posts": tweets})
