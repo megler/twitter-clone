@@ -107,7 +107,8 @@
                         <span class="fullname">
                           <strong>{{post.author.first_name}}</strong>
                         </span>
-                        <span class="username">@{{post.author.username}}</span>
+                        <a href="{% url 'user_profile' pk=post.author.id %}">
+                          <span class="username">@{{post.author.username}}</span></a>
                         <span class="tweet-time">-
                           {{post.date_created}}</span>
                       </div>
@@ -150,7 +151,8 @@
                               <span class="profile-fullname">
                                 <strong>{{other_users.first_name}}</strong>
                               </span>
-                              <span class="username">@{{other_users.username}}</span>
+                              <a href="{% url 'user_profile' pk=other_users.id %}">
+                                <span class="username">@{{other_users.username}}</span></a>
                             </div>
                             <button class="btn btn-follow">Follow</button>
                           </div>

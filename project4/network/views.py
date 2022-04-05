@@ -17,24 +17,23 @@ def index(request):
         if request.method == "POST":
             send_tweet(request)
             return all_tweets(request)
-        else:
-            pk = request.user.id
-            tweets = Post.objects.filter(id=pk)
-            tweets = sort_tweets(tweets)
-            user = User.objects.get(pk=pk)
-            other_users = who_to_follow(request)[:10]
 
-            return render(
-                request,
-                "network/index.html",
-                {
-                    "posts": tweets,
-                    "user": user,
-                    "follow_suggestions": other_users
-                },
-            )
-    if not request.user.is_authenticated:
-        return all_tweets(request)
+        pk = request.user.id
+        tweets = Post.objects.filter(author__id=pk)
+        sorted_tweets = sort_tweets(tweets)
+        user = User.objects.get(pk=pk)
+        other_users = who_to_follow(request)[:10]
+
+        return render(
+            request,
+            "network/index.html",
+            {
+                "posts": sorted_tweets,
+                "user": user,
+                "follow_suggestions": other_users,
+            },
+        )
+    return all_tweets(request)
 
 
 def login_view(request):
@@ -103,6 +102,21 @@ def all_tweets(request):
         other_users = who_to_follow(request)[:10]
     else:
         other_users = ""
+
+    return render(
+        request,
+        "network/index.html",
+        {
+            "posts": tweets,
+            "follow_suggestions": other_users
+        },
+    )
+
+
+def user_profile(request, pk):
+    tweets = Post.objects.filter(id=pk)
+    tweets = sort_tweets(tweets)
+    other_users = who_to_follow(request)[:10]
 
     return render(
         request,
