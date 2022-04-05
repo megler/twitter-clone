@@ -15,15 +15,13 @@ def index(request):
 
     if request.user.is_authenticated:
         if request.method == "POST":
-            user = User.objects.get(pk=request.user.id)
-            tweet_body = request.POST["tweet_body"]
-            new_tweet = Post.objects.create(author=user, post_body=tweet_body)
-            new_tweet.save()
-            print("I worked")
-            return HttpResponseRedirect(reverse("index"))
+            # function in .util.py
+            send_tweet(request)
+            return all_tweets(request)
         else:
             pk = request.user.id
             tweets = Post.objects.filter(id=pk)
+            # function in .util.py
             tweets = sort_tweets(tweets)
             user = User.objects.get(pk=pk)
             return render(
@@ -35,7 +33,7 @@ def index(request):
                 },
             )
     if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse("all_tweets"))
+        return all_tweets(request)
 
 
 def login_view(request):
@@ -101,9 +99,3 @@ def all_tweets(request):
     tweets = Post.objects.all()
     tweets = sort_tweets(tweets)
     return render(request, "network/index.html", {"posts": tweets})
-
-
-# @login_required(login_url="login")
-# def send_tweet(request):
-
-#     return render(request, "index.html")
