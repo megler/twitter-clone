@@ -15,16 +15,15 @@ def index(request):
 
     if request.user.is_authenticated:
         if request.method == "POST":
-            # function in .util.py
             send_tweet(request)
             return all_tweets(request)
         else:
             pk = request.user.id
             tweets = Post.objects.filter(id=pk)
-            # function in .util.py
             tweets = sort_tweets(tweets)
             user = User.objects.get(pk=pk)
-            other_users = who_to_follow(request)
+            other_users = who_to_follow(request)[:10]
+
             return render(
                 request,
                 "network/index.html",
@@ -100,4 +99,16 @@ def register(request):
 def all_tweets(request):
     tweets = Post.objects.all()
     tweets = sort_tweets(tweets)
-    return render(request, "network/index.html", {"posts": tweets})
+    if request.user.is_authenticated:
+        other_users = who_to_follow(request)[:10]
+    else:
+        other_users = ""
+
+    return render(
+        request,
+        "network/index.html",
+        {
+            "posts": tweets,
+            "follow_suggestions": other_users
+        },
+    )
