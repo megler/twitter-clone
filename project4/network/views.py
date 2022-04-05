@@ -6,7 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 from .util import *
-from .models import User, Post, Follower, Like, Profile
+from .models import User, Post, Like, Profile
 
 
 def index(request):
@@ -24,12 +24,14 @@ def index(request):
             # function in .util.py
             tweets = sort_tweets(tweets)
             user = User.objects.get(pk=pk)
+            other_users = who_to_follow(request)
             return render(
                 request,
                 "network/index.html",
                 {
                     "posts": tweets,
-                    "user": user
+                    "user": user,
+                    "follow_suggestions": other_users
                 },
             )
     if not request.user.is_authenticated:

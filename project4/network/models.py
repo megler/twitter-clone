@@ -6,13 +6,11 @@ from django.utils.timezone import now
 
 
 class User(AbstractUser):
-    followers_list = models.ManyToManyField("Follower",
-                                            related_name="followers_list")
-
     def __str__(self):
         return f"{self.username}"
 
 
+# Credit for User Model Extension: https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html#onetoone
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     background_image = models.URLField(null=True)
@@ -21,6 +19,9 @@ class Profile(models.Model):
                                    null=True,
                                    blank=True,
                                    default=now)
+    followers = models.ManyToManyField(User,
+                                       blank=True,
+                                       related_name="followers")
 
     def __str__(self):
         return f"{self.user.first_name}"
@@ -36,17 +37,6 @@ class Post(models.Model):
 
     def __str__(self):
         return f"{self.post_body[0:5]}"
-
-
-class Follower(models.Model):
-    user_follows = models.ForeignKey(User,
-                                     null=True,
-                                     on_delete=models.CASCADE,
-                                     related_name="user_follows")
-    user_followed = models.ForeignKey(User,
-                                      null=True,
-                                      on_delete=models.CASCADE,
-                                      related_name="user_followed")
 
 
 class Like(models.Model):
@@ -65,6 +55,7 @@ class Like(models.Model):
         return f"User {self.user_liked.username} likes {self.post_liked.post_body[0:5]}"
 
 
+# Credit: https://simpleisbetterthancomplex.com/tutorial/2016/07/28/how-to-create-django-signals.html
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:

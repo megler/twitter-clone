@@ -142,18 +142,20 @@
                   <div class="panel-content">
                     <!--Follow list -->
                     <ol class="tweet-list">
-                      <li class="tweet-card">
-                        <div class="tweet-content">
-                          <img class="tweet-card-avatar" src="https://pbs.twimg.com/profile_images/679974972278849537/bzzb-6H4_bigger.jpg" alt="">
-                          <div class="tweet-header">
-                            <span class="fullname">
-                              <strong>Jon Vadillo</strong>
-                            </span>
-                            <span class="username">@JonVadillo</span>
+                      {% for other_users in follow_suggestions%}
+                        <li class="tweet-card">
+                          <div class="tweet-content">
+                            <img class="tweet-card-avatar" src="https://pbs.twimg.com/profile_images/679974972278849537/bzzb-6H4_bigger.jpg" alt="">
+                            <div class="tweet-header">
+                              <span class="profile-fullname">
+                                <strong>{{other_users.first_name}}</strong>
+                              </span>
+                              <span class="username">@{{other_users.username}}</span>
+                            </div>
+                            <button class="btn btn-follow">Follow</button>
                           </div>
-                          <button class="btn btn-follow">Follow</button>
-                        </div>
-                      </li>
+                        </li>
+                      {% endfor %}
                     </ol>
                     <!--END: Follow list -->
                   </div>
