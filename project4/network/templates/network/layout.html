@@ -64,7 +64,9 @@
         </ul>
         <!-- END: Navbar navigation links -->
         <!-- Navbar Tweet button -->
-        <button class="btn btn-search-bar toggle">Write Tweet</button>
+        {% if user.is_authenticated %}
+          <button class="btn btn-search-bar toggle">Write Tweet</button>
+        {% endif %}
       </div>
     </nav>
     <!-- END: Fixed top navbar -->

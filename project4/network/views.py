@@ -1,5 +1,6 @@
 import json
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
@@ -11,19 +12,28 @@ from .models import User, Post, Follower, Like, Profile
 def index(request):
     """When visiting homepage, if user auth, then show user's tweets else
     show all tweets"""
+
     if request.user.is_authenticated:
-        pk = request.user.id
-        tweets = Post.objects.filter(id=pk)
-        tweets = sort_tweets(tweets)
-        user = User.objects.get(pk=pk)
-        return render(
-            request,
-            "network/index.html",
-            {
-                "posts": tweets,
-                "user": user
-            },
-        )
+        if request.method == "POST":
+            user = User.objects.get(pk=request.user.id)
+            tweet_body = request.POST["tweet_body"]
+            new_tweet = Post.objects.create(author=user, post_body=tweet_body)
+            new_tweet.save()
+            print("I worked")
+            return HttpResponseRedirect(reverse("index"))
+        else:
+            pk = request.user.id
+            tweets = Post.objects.filter(id=pk)
+            tweets = sort_tweets(tweets)
+            user = User.objects.get(pk=pk)
+            return render(
+                request,
+                "network/index.html",
+                {
+                    "posts": tweets,
+                    "user": user
+                },
+            )
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse("all_tweets"))
 
@@ -91,3 +101,9 @@ def all_tweets(request):
     tweets = Post.objects.all()
     tweets = sort_tweets(tweets)
     return render(request, "network/index.html", {"posts": tweets})
+
+
+# @login_required(login_url="login")
+# def send_tweet(request):
+
+#     return render(request, "index.html")

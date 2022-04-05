@@ -5,7 +5,11 @@
   <div class="main-container">
     <!-- Profile background large image -->
     <div class="row ">
-      <img class="profile-background" src="{{ user.profile.background_image }}" alt="">
+      {% if user.is_authenticated %}
+        <img class="profile-background" src="{{ user.profile.background_image }}" alt="">
+      {% else %}
+        <img class="profile-background" src="https://images.pexels.com/photos/1435849/pexels-photo-1435849.jpeg?cs=srgb&dl=pexels-engin-akyurt-1435849.jpg&fm=jpg" alt="">
+      {% endif %}
       <div class="container">
         <!-- User main avatar -->
         <div class="avatar-container">
@@ -74,23 +78,22 @@
             {% endif %}
             <!-- End Left column -->
             <!-- Center content column -->
-            <div class="col-6">
-              {# Begin Tweet Box #}
+            <div class="col-6 compose-form">
+              {# Begin Send Tweet Box/Form #}
               <div class="toggleBox">
                 <div class="wrapper">
-                  <div class="input-box">
-                    <div class="tweet-area">
-                      <span class="placeholder">What's happening?</span>
-                      <div class="input editable" contenteditable="true" spellcheck="false"></div>
-                      <div class="input readonly" contenteditable="true" spellcheck="false"></div>
+                  <form action="{% url 'index' %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                      <textarea required="true" aria-label="Send A Tweet" class="form-control" name="tweet_body" placeholder="What's happening?" rows="3"></textarea>
                     </div>
-                  </div>
-                  <div class="bottom">
-                    <div class="content">
-                      <span class="counter">100</span>
-                      <button>Tweet</button>
+                    <div class="bottom">
+                      <div class="content">
+                        <span class="counter">100</span>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                      </div>
                     </div>
-                  </div>
+                  </form>
                 </div>
               </div>
               {# End Tweet Box #}
@@ -117,24 +120,9 @@
                       </div>
                       <div class="tweet-footer">
                         <a class="tweet-footer-btn">
-                          <i class="octicon octicon-comment" aria-hidden="true"></i>
-                          <span>
-                            18</span>
-                        </a>
-                        <a class="tweet-footer-btn">
-                          <i class="octicon octicon-sync" aria-hidden="true"></i>
-                          <span>
-                            64</span>
-                        </a>
-                        <a class="tweet-footer-btn">
                           <i class="octicon octicon-heart" aria-hidden="true"></i>
                           <span>
-                            202</span>
-                        </a>
-                        <a class="tweet-footer-btn">
-                          <i class="octicon octicon-mail" aria-hidden="true"></i>
-                          <span>
-                            155</span>
+                            0</span>
                         </a>
                       </div>
                     </div>

@@ -9,4 +9,5 @@ urlpatterns = [
     path("register", views.register, name="register"),
     # API
     path("index", views.all_tweets, name="all_tweets"),
+    # path("index", views.send_tweet, name="send_tweet"),
 ]
