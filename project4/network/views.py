@@ -127,3 +127,10 @@ def user_profile(request, pk):
             "follow_suggestions": other_users,
         },
     )
+
+
+def follow(request, pk):
+    to_follow = Profile.objects.get(pk=pk)
+    to_follow.followers.add(request.user)
+    to_follow.save()
+    return user_profile(request, pk)
