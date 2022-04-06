@@ -27,9 +27,9 @@
         <ul class="navbar-nav mr-auto">
           {% if user.is_authenticated %}
             <li class="nav-item active">
-              <a class="nav-link" href="{% url 'index'%}">
+              <a class="nav-link" href="{% url 'user_profile' pk=user.id %}">
                 <i class="octicon octicon-home" aria-hidden="true"></i>
-                {{ user.username }}
+                {{user.username}}
                 <span class="sr-only">(current)</span></a>
             </li>
           {% endif %}

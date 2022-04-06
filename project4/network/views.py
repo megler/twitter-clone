@@ -117,12 +117,13 @@ def user_profile(request, pk):
     tweets = Post.objects.filter(id=pk)
     tweets = sort_tweets(tweets)
     other_users = who_to_follow(request)[:10]
-
+    user_profile = User.objects.get(pk=pk)
     return render(
         request,
         "network/index.html",
         {
+            "user_profile": user_profile,
             "posts": tweets,
-            "follow_suggestions": other_users
+            "follow_suggestions": other_users,
         },
     )
