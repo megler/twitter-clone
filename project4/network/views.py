@@ -21,10 +21,6 @@ def index(request):
         user = User.objects.get(pk=pk)
         other_users = who_to_follow(request)[:10]
 
-        if request.method == "POST":
-            send_tweet(request)
-            return user_profile(request, pk)
-
         return render(
             request,
             "network/index.html",
@@ -129,8 +125,19 @@ def user_profile(request, pk):
     )
 
 
-def follow(request, pk):
-    to_follow = Profile.objects.get(pk=pk)
-    to_follow.followers.add(request.user)
-    to_follow.save()
-    return user_profile(request, pk)
+def follow(request, id):
+    if request.method == "POST":
+
+        to_follow = Profile.objects.get(user=id)
+        to_follow.followers.add(request.user)
+        to_follow.save()
+        return user_profile(request, id)
+
+
+def send_tweet(request, pk):
+    if request.method == "POST":
+        user = User.objects.get(pk=request.user.id)
+        tweet_body = request.POST["tweet_body"]
+        new_tweet = Post.objects.create(author=user, post_body=tweet_body)
+        new_tweet.save()
+        return user_profile(request, pk)

@@ -33,7 +33,7 @@
               <li>
                 <a>
                   <span class="profile-stats-item profile-stats-item-label">Following</span>
-                  <span class="profile-stats-item profile-stats-item-number">420</span>
+                  <span class="profile-stats-item profile-stats-item-number">0</span>
                 </a>
               </li>
               <li>
@@ -74,7 +74,10 @@
                     {{ user_profile_id.profile.date_joined }}</h2>
                   {# Show follow button if not current logged in user #}
                   {% if user != user_profile_id %}
-                    <button class="btn btn-primary follow-toggle">Follow</button>
+                    <form action="{% url 'follow' id=user_profile_id.id %}" method="post">
+                      {% csrf_token %}
+                      <button class="btn btn-primary follow-toggle">Follow</button>
+                    </form>
                   {% endif %}
                 </div>
               </div>
@@ -84,23 +87,25 @@
             <!-- End Left column -->
             <!-- Center content column -->
             <div class="col-6 compose-form">
-              {# Begin Send Tweet Box/Form #}
-              <div class="toggleBox">
-                <div class="wrapper">
-                  <form action="{% url 'index' %}" method="post">
-                    {% csrf_token %}
-                    <div class="form-group">
-                      <textarea required="true" aria-label="Send A Tweet" class="form-control" name="tweet_body" placeholder="What's happening?" rows="3"></textarea>
-                    </div>
-                    <div class="bottom">
-                      <div class="content">
-                        <span class="counter">100</span>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+              {% if user.is_authenticated %}
+                {# Begin Send Tweet Box/Form #}
+                <div class="toggleBox">
+                  <div class="wrapper">
+                    <form action="{% url 'send_tweet' pk=user.id %}" method="post">
+                      {% csrf_token %}
+                      <div class="form-group">
+                        <textarea required="true" aria-label="Send A Tweet" class="form-control" name="tweet_body" placeholder="What's happening?" rows="3"></textarea>
                       </div>
-                    </div>
-                  </form>
+                      <div class="bottom">
+                        <div class="content">
+                          <span class="counter">100</span>
+                          <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
                 </div>
-              </div>
+              {% endif %}
               {# End Tweet Box #}
 
               {# BEGIN TWEET CARD #}
@@ -161,7 +166,7 @@
                               <a href="{% url 'user_profile' pk=other_users.id %}">
                                 <span class="username">@{{other_users.username}}</span></a>
                             </div>
-                            <form action="{% url 'follow' pk=other_users.id %}" method="post">
+                            <form action="{% url 'follow' id=other_users.id %}" method="post">
                               {% csrf_token %}
                               <button type="submit" class="btn btn-primary btn-sm follow-toggle">Follow</button>
                             </form>

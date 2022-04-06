@@ -7,14 +7,6 @@ def sort_tweets(what_to_sort):
     return what_to_sort
 
 
-def send_tweet(request):
-    user = User.objects.get(pk=request.user.id)
-    tweet_body = request.POST["tweet_body"]
-    new_tweet = Post.objects.create(author=user, post_body=tweet_body)
-    new_tweet.save()
-    return
-
-
 def who_to_follow(request):
     users = User.objects.exclude(pk=request.user.id)
     return users
