@@ -62,14 +62,14 @@
             <div class="profile-header">
               <!-- Header information -->
               <h3 class="profile-fullname">
-                <a>{{user_profile.first_name}}
+                <a>{{user_profile_id.first_name}}
                   <a></h3>
                   <h2 class="profile-element">
-                    <a>@{{ user_profile.username }}</a>
+                    <a>@{{ user_profile_id.username }}</a>
                   </h2>
                   <h2 class="profile-element">
                     <i class="octicon octicon-calendar"></i>Joined
-                    {{ user_profile.profile.date_joined }}</h2>
+                    {{ user_profile_id.profile.date_joined }}</h2>
                 </div>
               </div>
             {% else %}

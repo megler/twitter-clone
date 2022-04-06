@@ -14,15 +14,15 @@ def index(request):
     show all tweets"""
 
     if request.user.is_authenticated:
-        if request.method == "POST":
-            send_tweet(request)
-            return all_tweets(request)
-
         pk = request.user.id
         tweets = Post.objects.filter(author__id=pk)
         sorted_tweets = sort_tweets(tweets)
         user = User.objects.get(pk=pk)
         other_users = who_to_follow(request)[:10]
+
+        if request.method == "POST":
+            send_tweet(request)
+            return user_profile(request, pk)
 
         return render(
             request,
@@ -33,7 +33,7 @@ def index(request):
                 "follow_suggestions": other_users,
             },
         )
-    return all_tweets(request)
+    return user_profile(request, pk=0)
 
 
 def login_view(request):
@@ -95,34 +95,25 @@ def register(request):
         return render(request, "network/register.html")
 
 
-def all_tweets(request):
-    tweets = Post.objects.all()
-    tweets = sort_tweets(tweets)
+def user_profile(request, pk):
+    all_tweets = Post.objects.all()
+    specific_tweets = Post.objects.filter(author__id=pk)
+    user_profile_id = User.objects.get(pk=pk)
+
+    if pk == 0:
+        tweets = sort_tweets(all_tweets)
+    else:
+        tweets = sort_tweets(specific_tweets)
+
     if request.user.is_authenticated:
         other_users = who_to_follow(request)[:10]
     else:
         other_users = ""
-
     return render(
         request,
         "network/index.html",
         {
-            "posts": tweets,
-            "follow_suggestions": other_users
-        },
-    )
-
-
-def user_profile(request, pk):
-    tweets = Post.objects.filter(id=pk)
-    tweets = sort_tweets(tweets)
-    other_users = who_to_follow(request)[:10]
-    user_profile = User.objects.get(pk=pk)
-    return render(
-        request,
-        "network/index.html",
-        {
-            "user_profile": user_profile,
+            "user_profile_id": user_profile_id,
             "posts": tweets,
             "follow_suggestions": other_users,
         },
