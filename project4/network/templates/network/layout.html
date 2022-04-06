@@ -34,7 +34,7 @@
             </li>
           {% endif %}
           <li class="nav-item">
-            <a class=" nav-link" href="{% url 'user_profile' pk=0 %}">
+            <a class=" nav-link" href="{% url 'all_tweets' %}">
               <i class="octicon octicon-zap"></i>
               All Posts</a>
           </li>
@@ -77,15 +77,6 @@
     <script src='https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/js/bootstrap.min.js'></script>
-    <script>
-      window.django = {
-        user: {
-          id: "{{ request.user.id }}"
-        }
-      }
-      console.log(window.django.user.id)
-    </script>
-
     <script src="{% static 'network/scripts.js' %}" rel="stylesheet"></script>
   </body>
 

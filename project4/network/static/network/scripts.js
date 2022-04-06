@@ -38,4 +38,18 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // END ANIMATION TOGGLE
+
+  // BEGIN FOLLOW/UNFOLLOW TOGGLE
+  const followBtn = document.querySelector(".follow-toggle");
+
+  followBtn.addEventListener("click", () => {
+    if (followBtn.innerHTML === "Follow") {
+      console.log(followBtn.innerHTML);
+      followBtn.innerHTML = "Unfollow";
+    } else {
+      followBtn.innerHTML = "Follow";
+    }
+  });
+
+  // END FOLLOW/UNFOLLOW TOGGLE
 });

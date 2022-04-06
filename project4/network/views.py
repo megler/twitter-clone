@@ -14,6 +14,7 @@ def index(request):
     show all tweets"""
 
     if request.user.is_authenticated:
+        profile = True
         pk = request.user.id
         tweets = Post.objects.filter(author__id=pk)
         sorted_tweets = sort_tweets(tweets)
@@ -28,12 +29,13 @@ def index(request):
             request,
             "network/index.html",
             {
+                "profile": profile,
                 "posts": sorted_tweets,
                 "user": user,
                 "follow_suggestions": other_users,
             },
         )
-    return user_profile(request, pk=0)
+    return all_tweets(request)
 
 
 def login_view(request):
@@ -95,15 +97,21 @@ def register(request):
         return render(request, "network/register.html")
 
 
-def user_profile(request, pk):
+def all_tweets(request):
     all_tweets = Post.objects.all()
-    specific_tweets = Post.objects.filter(author__id=pk)
-    user_profile_id = User.objects.get(pk=pk)
+    tweets = sort_tweets(all_tweets)
+    profile = False
+    return render(request, "network/index.html", {
+        "posts": tweets,
+        "profile": profile
+    })
 
-    if pk == 0:
-        tweets = sort_tweets(all_tweets)
-    else:
-        tweets = sort_tweets(specific_tweets)
+
+def user_profile(request, pk):
+    user_profile_id = User.objects.get(pk=pk)
+    specific_tweets = Post.objects.filter(author__id=pk)
+    tweets = sort_tweets(specific_tweets)
+    profile = True
 
     if request.user.is_authenticated:
         other_users = who_to_follow(request)[:10]
@@ -113,6 +121,7 @@ def user_profile(request, pk):
         request,
         "network/index.html",
         {
+            "profile": profile,
             "user_profile_id": user_profile_id,
             "posts": tweets,
             "follow_suggestions": other_users,
