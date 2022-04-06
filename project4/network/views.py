@@ -14,7 +14,7 @@ def index(request):
     show all tweets"""
 
     if request.user.is_authenticated:
-        profile = True
+        profile = False
         pk = request.user.id
         tweets = Post.objects.filter(author__id=pk)
         sorted_tweets = sort_tweets(tweets)
