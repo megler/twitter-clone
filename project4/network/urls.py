@@ -10,5 +10,6 @@ urlpatterns = [
     path("network/index", views.all_tweets, name="all_tweets"),
     path("network/index/<int:pk>", views.user_profile, name="user_profile"),
     path("network/follow/<int:id>", views.follow, name="follow"),
+    path("network/unfollow/<int:id>", views.unfollow, name="unfollow"),
     path("network/send-tweet/<int:pk>", views.send_tweet, name="send_tweet"),
 ]

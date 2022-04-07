@@ -34,3 +34,8 @@ def follow_nums(user_id):
             user_followed_by_count = people_following_user.count()
 
     return (user_followed_by_count, user_following_count, is_following)
+
+
+def tweet_count(user_id):
+    posts = Post.objects.filter(author__pk=user_id)
+    return posts.count()

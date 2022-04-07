@@ -109,6 +109,7 @@ def user_profile(request, pk):
     user_profile_id = User.objects.get(pk=pk)
     specific_tweets = Post.objects.filter(author__id=pk)
     tweets = sort_tweets(specific_tweets)
+    num_tweets = tweet_count(pk)
     profile = True
 
     # get a suggested follower list and limit to 10
@@ -123,6 +124,7 @@ def user_profile(request, pk):
         request,
         "network/index.html",
         {
+            "tweet_count": num_tweets,
             "is_following": is_following,
             "user_follows": user_following_count,
             "user_followed_by": user_followed_by_count,
@@ -139,6 +141,14 @@ def follow(request, id):
         to_follow = Profile.objects.get(user=id)
         to_follow.followers.add(request.user)
         to_follow.save()
+        return user_profile(request, id)
+
+
+def unfollow(request, id):
+    if request.method == "POST":
+        to_unfollow = Profile.objects.get(user=id)
+        to_unfollow.followers.remove(request.user)
+        to_unfollow.save()
         return user_profile(request, id)
 
 
