@@ -33,13 +33,13 @@
               <li>
                 <a>
                   <span class="profile-stats-item profile-stats-item-label">Following</span>
-                  <span class="profile-stats-item profile-stats-item-number">{{followers}}</span>
+                  <span class="profile-stats-item profile-stats-item-number">{{user_follows}}</span>
                 </a>
               </li>
               <li>
                 <a>
                   <span class="profile-stats-item profile-stats-item-label">Followers</span>
-                  <span class="profile-stats-item profile-stats-item-number">{{following}}</span>
+                  <span class="profile-stats-item profile-stats-item-number">{{user_followed_by}}</span>
                 </a>
               </li>
               <li>
@@ -73,11 +73,17 @@
                     <i class="octicon octicon-calendar"></i>Joined
                     {{ user_profile_id.profile.date_joined }}</h2>
                   {# Show follow button if not current logged in user #}
-                  {% if user != user_profile_id %}
+                  {% if user != user_profile_id and is_following == False %}
                     <form action="{% url 'follow' id=user_profile_id.id %}" method="post">
                       {% csrf_token %}
                       <button class="btn btn-primary follow-toggle">Follow</button>
                     </form>
+                  {% elif user != user_profile_id and is_following %}
+                    <form action="{% url 'follow' id=user_profile_id.id %}" method="post">
+                      {% csrf_token %}
+                      <button class="btn btn-primary follow-toggle">Unfollow</button>
+                    </form>
+
                   {% endif %}
                 </div>
               </div>
@@ -166,10 +172,18 @@
                               <a href="{% url 'user_profile' pk=other_users.id %}">
                                 <span class="username">@{{other_users.username}}</span></a>
                             </div>
-                            <form action="{% url 'follow' id=other_users.id %}" method="post">
-                              {% csrf_token %}
-                              <button type="submit" class="btn btn-primary btn-sm follow-toggle">Follow</button>
-                            </form>
+
+                            {% if is_following == False %}
+                              <form action="{% url 'follow' id=other_users.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary btn-sm follow-toggle">Follow</button>
+                              </form>
+                            {% else %}
+                              <form action="{% url 'follow' id=other_users.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary btn-sm follow-toggle">Unfollow</button>
+                              </form>
+                            {% endif %}
                           </div>
                         </li>
                       {% endfor %}
