@@ -106,7 +106,6 @@ def all_tweets(request):
 
 
 def user_profile(request, pk):
-
     user_profile_id = User.objects.get(pk=pk)
     specific_tweets = Post.objects.filter(author__id=pk)
     tweets = sort_tweets(specific_tweets)
@@ -120,20 +119,27 @@ def user_profile(request, pk):
 
     # Get all users to create iterable
     follows = User.objects.all()
-    user_count = 0
+    user_followed_by_count = 0
+    user_following_count = 0
     # Loop over users
     for user in follows:
         # get all followers for all users
-        following = user.followers.all()
+        user_following = user.profile.followers.all()
+        people_following_user = user.followed_by.all()
+
         # get any profiles this user is following
-        if user == user_profile_id and following.count() > 0:
-            user_count = following.count()
+        if user == user_profile_id and user_following.count() > 0:
+            user_following_count = user_following.count()
+
+        if user == user_profile_id and people_following_user.count() > 0:
+            user_followed_by_count = people_following_user.count()
 
     return render(
         request,
         "network/index.html",
         {
-            "followers": user_count,
+            "followers": user_followed_by_count,
+            "following": user_following_count,
             "profile": profile,
             "user_profile_id": user_profile_id,
             "posts": tweets,

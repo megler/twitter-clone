@@ -23,7 +23,7 @@ class Profile(models.Model):
                                    default=now)
     followers = models.ManyToManyField(User,
                                        blank=True,
-                                       related_name="followers")
+                                       related_name="followed_by")
 
     def __str__(self):
         return f"{self.user.first_name}"
