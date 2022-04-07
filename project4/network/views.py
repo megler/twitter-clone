@@ -1,4 +1,5 @@
 import json
+from webbrowser import get
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
@@ -13,6 +14,7 @@ def index(request):
     """When visiting homepage, if user auth, then show user's tweets else
     show all tweets"""
 
+    profile = True
     if request.user.is_authenticated:
         profile = False
         pk = request.user.id
@@ -104,19 +106,34 @@ def all_tweets(request):
 
 
 def user_profile(request, pk):
+
     user_profile_id = User.objects.get(pk=pk)
     specific_tweets = Post.objects.filter(author__id=pk)
     tweets = sort_tweets(specific_tweets)
     profile = True
 
+    # get a suggested follower list and limit to 10
     if request.user.is_authenticated:
         other_users = who_to_follow(request)[:10]
-    else:
-        other_users = ""
+
+    # Does user have followers
+
+    # Get all users to create iterable
+    follows = User.objects.all()
+    user_count = 0
+    # Loop over users
+    for user in follows:
+        # get all followers for all users
+        following = user.followers.all()
+        # get any profiles this user is following
+        if user == user_profile_id and following.count() > 0:
+            user_count = following.count()
+
     return render(
         request,
         "network/index.html",
         {
+            "followers": user_count,
             "profile": profile,
             "user_profile_id": user_profile_id,
             "posts": tweets,
@@ -127,7 +144,6 @@ def user_profile(request, pk):
 
 def follow(request, id):
     if request.method == "POST":
-
         to_follow = Profile.objects.get(user=id)
         to_follow.followers.add(request.user)
         to_follow.save()
