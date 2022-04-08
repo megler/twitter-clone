@@ -1,4 +1,5 @@
 from .models import User, Post
+from django.core.paginator import Paginator
 
 
 def sort_tweets(what_to_sort):
@@ -39,3 +40,10 @@ def follow_nums(user_id):
 def tweet_count(user_id):
     posts = Post.objects.filter(author__pk=user_id)
     return posts.count()
+
+
+def paginate(request, items):
+    paginator = Paginator(items, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    return page_obj

@@ -1,5 +1,4 @@
 import json
-from webbrowser import get
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
@@ -15,7 +14,7 @@ def index(request):
 
     all_tweets = Post.objects.all()
     tweets = sort_tweets(all_tweets)
-
+    tweets = paginate(request, tweets)
     return render(request, "network/index.html", {
         "posts": tweets,
     })
@@ -84,6 +83,7 @@ def user_profile(request, pk):
     user_profile_id = User.objects.get(pk=pk)
     specific_tweets = Post.objects.filter(author__id=pk)
     tweets = sort_tweets(specific_tweets)
+    tweets = paginate(request, tweets)
     num_tweets = tweet_count(pk)
 
     # get a suggested follower list and limit to 10
@@ -109,6 +109,29 @@ def user_profile(request, pk):
     )
 
 
+def send_tweet(request, pk):
+    if request.method == "POST":
+        user = User.objects.get(pk=request.user.id)
+        tweet_body = request.POST["tweet_body"]
+        new_tweet = Post.objects.create(author=user, post_body=tweet_body)
+        new_tweet.save()
+        return user_profile(request, pk)
+
+
+# Inspiration credit: https://stackoverflow.com/questions/53803106/django-query-how-to-find-all-posts-from-people-you-follow
+@login_required(login_url="login")
+def user_following(request, pk):
+    followed_people = Profile.objects.filter(followers__id=pk).values("user")
+    tweets = Post.objects.filter(author__in=followed_people)
+    tweets = sort_tweets(tweets)
+    tweets = paginate(request, tweets)
+    return render(
+        request,
+        "network/following.html",
+        {"posts": tweets},
+    )
+
+
 # Functionality
 
 
@@ -126,25 +149,3 @@ def unfollow(request, id):
         to_unfollow.followers.remove(request.user)
         to_unfollow.save()
         return user_profile(request, id)
-
-
-def send_tweet(request, pk):
-    if request.method == "POST":
-        user = User.objects.get(pk=request.user.id)
-        tweet_body = request.POST["tweet_body"]
-        new_tweet = Post.objects.create(author=user, post_body=tweet_body)
-        new_tweet.save()
-        return user_profile(request, pk)
-
-
-# Inspiration credit: https://stackoverflow.com/questions/53803106/django-query-how-to-find-all-posts-from-people-you-follow
-@login_required(login_url="login")
-def user_following(request, pk):
-    followed_people = Profile.objects.filter(followers__id=pk).values("user")
-    tweets = Post.objects.filter(author__in=followed_people)
-
-    return render(
-        request,
-        "network/following.html",
-        {"posts": tweets},
-    )
