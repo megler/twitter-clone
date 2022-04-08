@@ -1,6 +1,4 @@
-{% extends "network/index.html" %}
-{% block title %}My amazing blog{% endblock %}
-{% block body %}
+<ol class="tweet-list">
   {% for post in posts %}
     <li class="tweet-card">
       <div class="tweet-content">
@@ -32,4 +30,4 @@
     {% empty %}
     <li>This user has no tweets to share at the moment.</li>
   {% endfor %}
-{% endblock %}
+</ol>

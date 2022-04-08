@@ -1,0 +1,30 @@
+{% if user.is_authenticated and user_profile_id %}
+  <div class="profile-header">
+    <!-- Header information -->
+    <h3 class="profile-fullname">
+      <a>{{user_profile_id.first_name}}
+        <a></h3>
+        <h2 class="profile-element">
+          <a href="{% url 'user_profile' pk=user_profile_id.id %}">
+            @{{ user_profile_id.username }}
+          </a>
+        </h2>
+        <h2 class="profile-element">
+          <i class="octicon octicon-calendar"></i>Joined
+          {{ user_profile_id.profile.date_joined }}</h2>
+        {# Show follow button if not current logged in user #}
+        {% if user != user_profile_id and is_following == False %}
+          <form action="{% url 'follow' id=user_profile_id.id %}" method="post">
+            {% csrf_token %}
+            <button class="btn btn-primary follow-toggle">Follow</button>
+          </form>
+        {% elif user != user_profile_id and is_following %}
+          <form action="{% url 'unfollow' id=user_profile_id.id %}" method="post">
+            {% csrf_token %}
+            <button class="btn btn-primary follow-toggle">Unfollow</button>
+          </form>
+        {% endif %}
+      </div>
+    {% else %}
+      <div class="col"></div>
+    {% endif %}
