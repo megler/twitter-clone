@@ -1,0 +1,28 @@
+{% extends "network/layout.html" %}
+
+{% block left-sidebar %}
+  <!-- BEGIN Left column -->
+  <div class="col"></div>
+  <!-- END Left column -->
+{% endblock left-sidebar%}
+
+{% block body %}
+
+  <!-- BEGIN Center content column -->
+
+  <!-- Begin Send Tweet Box/Form -->
+  {% include "network/tweet-form.html" %}
+  <!-- END Tweet Box -->
+
+  <!-- BEGIN TWEET LIST-->
+  {% include "network/list-tweets.html" %}
+  <!-- END: TWEET LIST -->
+
+  <!-- END: Center content column -->
+{% endblock body%}
+
+{% block right-sidebar %}
+  <!-- BEGIN RIGHT SIDEBAR -->
+  <div class="col"></div>
+  <!-- END RIGHT SIDEBAR -->
+{% endblock right-sidebar%}

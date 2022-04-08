@@ -137,11 +137,14 @@ def send_tweet(request, pk):
         return user_profile(request, pk)
 
 
-# def user_following(request, pk):
-#     user_is_following = Profile.objects.filter(followers__id=pk)
+# Inspiration credit: https://stackoverflow.com/questions/53803106/django-query-how-to-find-all-posts-from-people-you-follow
+@login_required(login_url="login")
+def user_following(request, pk):
+    followed_people = Profile.objects.filter(followers__id=pk).values("user")
+    tweets = Post.objects.filter(author__in=followed_people)
 
-#     return render(
-#         request,
-#         "network/following.html",
-#         {"user_is_following": user_is_following},
-#     )
+    return render(
+        request,
+        "network/following.html",
+        {"posts": tweets},
+    )

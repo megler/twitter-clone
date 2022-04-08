@@ -39,7 +39,7 @@
           </li>
           {% if user.is_authenticated %}
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link" href="{% url 'user_following' pk=user.id %}">
                 <i class="octicon octicon-bell"></i>
                 Following</a>
             </li>

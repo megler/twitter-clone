@@ -11,4 +11,7 @@ urlpatterns = [
     path("network/follow/<int:id>", views.follow, name="follow"),
     path("network/unfollow/<int:id>", views.unfollow, name="unfollow"),
     path("network/send-tweet/<int:pk>", views.send_tweet, name="send_tweet"),
+    path("network/following/<int:pk>",
+         views.user_following,
+         name="user_following"),
 ]
