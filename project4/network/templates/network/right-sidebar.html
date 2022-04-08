@@ -1,35 +1,30 @@
-{% if user.is_authenticated and user_profile_id %}
-  <div class="col right-col">
-    <div class="content-panel">
-      <div class="panel-header text-center">
-        <h4>Meet New Friends</h4>
-      </div>
-      <!-- Meet New Friends panel -->
-      <div class="panel-content">
-        <!--Follow list -->
-        <ol class="tweet-list">
-          {% for other_users in follow_suggestions %}
-            <li class="tweet-card">
-              <div class="tweet-content">
-                <img class="tweet-card-avatar" src="https://pbs.twimg.com/profile_images/679974972278849537/bzzb-6H4_bigger.jpg" alt="">
-                <div class="tweet-header">
-                  <span class="profile-fullname">
-                    <strong>{{other_users.first_name}}</strong>
-                  </span>
-                  <p>
-                    <a href="{% url 'user_profile' pk=other_users.id %}">
-                      <span class="username">@{{other_users.username}}</span></a>
-                  </p>
-
-                </div>
-              </div>
-            </li>
-          {% endfor %}
-        </ol>
-        <!--END: Follow list -->
-      </div>
+<div class="col right-col">
+  <div class="content-panel">
+    <div class="panel-header text-center">
+      <h4>Meet New Friends</h4>
     </div>
-  {% else %}
-    <div class="col"></div>
-  {% endif %}
-</div>
+    <!-- Meet New Friends panel -->
+    <div class="panel-content">
+      <!--Follow list -->
+      <ol class="tweet-list">
+        {% for other_users in follow_suggestions %}
+          <li class="tweet-card">
+            <div class="tweet-content">
+              <img class="tweet-card-avatar" src="https://pbs.twimg.com/profile_images/679974972278849537/bzzb-6H4_bigger.jpg" alt="">
+              <div class="tweet-header">
+                <span class="profile-fullname">
+                  <strong>{{other_users.first_name}}</strong>
+                </span>
+                <p>
+                  <a href="{% url 'user_profile' pk=other_users.id %}">
+                    <span class="username">@{{other_users.username}}</span></a>
+                </p>
+
+              </div>
+            </div>
+          </li>
+        {% endfor %}
+      </ol>
+      <!--END: Follow list -->
+    </div>
+  </div>

@@ -96,7 +96,7 @@ def user_profile(request, pk):
 
     return render(
         request,
-        "network/index.html",
+        "network/profile.html",
         {
             "tweet_count": num_tweets,
             "is_following": is_following,
@@ -107,6 +107,9 @@ def user_profile(request, pk):
             "follow_suggestions": other_users,
         },
     )
+
+
+# Functionality
 
 
 def follow(request, id):
@@ -134,11 +137,11 @@ def send_tweet(request, pk):
         return user_profile(request, pk)
 
 
-def user_following(request, pk):
-    user_is_following = Profile.objects.filter(followers__id=pk)
+# def user_following(request, pk):
+#     user_is_following = Profile.objects.filter(followers__id=pk)
 
-    return render(
-        request,
-        "network/index.html",
-        {"user_is_following": user_is_following},
-    )
+#     return render(
+#         request,
+#         "network/following.html",
+#         {"user_is_following": user_is_following},
+#     )

@@ -1,28 +1,28 @@
 {% extends "network/layout.html" %}
-<!-- BEGIN STATS BAR -->
-<!-- END STATS BAR -->
-{% block body %}
+
+{% block left-sidebar %}
   <!-- BEGIN Left column -->
-  <div class="col profile-col">
-    {% include "network/left-sidebar.html" %}
-  </div>
+  <div class="col"></div>
   <!-- END Left column -->
+{% endblock left-sidebar%}
+
+{% block body %}
 
   <!-- BEGIN Center content column -->
-  <div class="col-6 compose-form">
 
-    <!-- Begin Send Tweet Box/Form -->
-    {% include "network/tweet-form.html" %}
-    <!-- END Tweet Box -->
+  <!-- Begin Send Tweet Box/Form -->
+  {% include "network/tweet-form.html" %}
+  <!-- END Tweet Box -->
 
-    <!-- BEGIN TWEET LIST-->
-    {% include "network/all-tweets.html" %}
-    <!-- END: TWEET LIST -->
+  <!-- BEGIN TWEET LIST-->
+  {% include "network/list-tweets.html" %}
+  <!-- END: TWEET LIST -->
 
-  </div>
   <!-- END: Center content column -->
+{% endblock body%}
 
+{% block right-sidebar %}
   <!-- BEGIN RIGHT SIDEBAR -->
-  {% include "network/right-sidebar.html" %}
+  <div class="col"></div>
   <!-- END RIGHT SIDEBAR -->
-{% endblock %}
+{% endblock right-sidebar%}

@@ -1,2 +1,33 @@
-{% extends "index.html" %}
-{% block title %}My amazing blog{% endblock %}
+{% extends "network/layout.html" %}
+
+<!-- BEGIN STATS BAR -->
+{% block stats%}
+  {% include "network/user-stats.html" %}
+{% endblock stats%}
+<!-- END STATS BAR -->
+
+<!-- BEGIN Left column -->
+{% block left-sidebar %}
+  {% include "network/left-sidebar.html" %}
+{% endblock left-sidebar%}
+<!-- END Left column -->
+
+{% block body %}
+  <!-- BEGIN Center content column -->
+
+  <!-- Begin Send Tweet Box/Form -->
+  {% include "network/tweet-form.html" %}
+  <!-- END Tweet Box -->
+
+  <!-- BEGIN TWEET LIST-->
+  {% include "network/list-tweets.html" %}
+  <!-- END: TWEET LIST -->
+
+  <!-- END: Center content column -->
+
+{% endblock %}
+<!-- BEGIN RIGHT SIDEBAR -->
+{% block right-sidebar %}
+  {% include "network/right-sidebar.html" %}
+{% endblock right-sidebar%}
+<!-- END RIGHT SIDEBAR -->

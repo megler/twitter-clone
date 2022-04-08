@@ -99,7 +99,11 @@
         {# END STAT BAR #}
         <div class="container main-content">
           <div class="row">
-            {% block body %}{% endblock body%}
+            {% block left-sidebar %}{% endblock left-sidebar%}
+            <div class="col-6 compose-form">
+              {% block body %}{% endblock body%}
+            </div>
+            {% block right-sidebar %}{% endblock right-sidebar%}
           </div>
         </div>
       </div>
