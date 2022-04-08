@@ -1,0 +1,35 @@
+{% extends "network/index.html" %}
+{% block title %}My amazing blog{% endblock %}
+{% block body %}
+  {% for post in posts %}
+    <li class="tweet-card">
+      <div class="tweet-content">
+        <div class="tweet-header">
+          <span class="fullname">
+            <strong>{{post.author.first_name}}</strong>
+          </span>
+          <a href="{% url 'user_profile' pk=post.author.id %}">
+            <span class="username">@{{post.author.username}}</span></a>
+          <span class="tweet-time">-
+            {{post.date_created}}</span>
+        </div>
+        <a>
+          <img class="tweet-card-avatar" src="https://pbs.twimg.com/profile_images/679974972278849537/bzzb-6H4_bigger.jpg" alt="">
+        </a>
+        <div class="tweet-text">
+          <p class="" lang="es" data-aria-label-part="0">{{post.post_body}}
+          </p>
+        </div>
+        <div class="tweet-footer">
+          <a class="tweet-footer-btn">
+            <i class="octicon octicon-heart" aria-hidden="true"></i>
+            <span>
+              0</span>
+          </a>
+        </div>
+      </div>
+    </li>
+    {% empty %}
+    <li>This user has no tweets to share at the moment.</li>
+  {% endfor %}
+{% endblock %}

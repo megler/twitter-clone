@@ -99,7 +99,7 @@ def all_tweets(request):
     all_tweets = Post.objects.all()
     tweets = sort_tweets(all_tweets)
     profile = False
-    return render(request, "network/index.html", {
+    return render(request, "network/all-tweets.html", {
         "posts": tweets,
         "profile": profile
     })
@@ -111,7 +111,6 @@ def user_profile(request, pk):
     tweets = sort_tweets(specific_tweets)
     num_tweets = tweet_count(pk)
     profile = True
-
     # get a suggested follower list and limit to 10
     if request.user.is_authenticated:
         other_users = who_to_follow(request)[:10]
@@ -159,3 +158,16 @@ def send_tweet(request, pk):
         new_tweet = Post.objects.create(author=user, post_body=tweet_body)
         new_tweet.save()
         return user_profile(request, pk)
+
+
+def user_following(request, pk):
+    user_is_following = Profile.objects.filter(followers__id=pk)
+    profile = False
+    return render(
+        request,
+        "network/index.html",
+        {
+            "profile": profile,
+            "user_is_following": user_is_following
+        },
+    )
