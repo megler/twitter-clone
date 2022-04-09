@@ -15,8 +15,11 @@ def index(request):
     all_tweets = Post.objects.all()
     tweets = sort_tweets(all_tweets)
     tweets = paginate(request, tweets)
+    likes = like_count()
+
     return render(request, "network/index.html", {
         "posts": tweets,
+        "likes": likes,
     })
 
 
@@ -157,7 +160,10 @@ def like(request):
     # Get form data
     data = json.loads(request.body)
     post_id = data.get("post_liked", "")
+    print(post_id)
     post = Post.objects.get(pk=int(post_id))
+    # Count Likes
+    likes = Like.objects.filter(post_liked=int(post_id)).count()
 
     if request.method == "POST":
         try:

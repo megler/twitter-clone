@@ -450,3 +450,7 @@ body {
 .middle-bar {
   height: 4rem;
 }
+
+#post-id {
+  display: none;
+}

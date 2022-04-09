@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const cookies = document.cookie.split(";");
       for (let i = 0; i < cookies.length; i++) {
         const cookie = cookies[i].trim();
-        // Does this cookie string begin with the name we want?
+        //  Does this cookie string begin with the name we want?
         if (cookie.substring(0, name.length + 1) === name + "=") {
           cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
           break;
@@ -57,44 +57,47 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     return cookieValue;
   }
-  const csrftoken = getCookie("csrftoken");
+  let csrftoken = getCookie("csrftoken");
 
   // BEGIN FOLLOW/UNFOLLOW TOGGLE
   const followBtn = document.querySelector(".follow-toggle");
-
-  followBtn.addEventListener("click", () => {
-    if (followBtn.innerHTML === "Follow") {
-      console.log(followBtn.innerHTML);
-      followBtn.innerHTML = "Unfollow";
-    } else {
-      followBtn.innerHTML = "Follow";
-    }
-  });
+  if (followBtn) {
+    followBtn.addEventListener("click", () => {
+      if (followBtn.innerHTML === "Follow") {
+        followBtn.innerHTML = "Unfollow";
+      } else {
+        followBtn.innerHTML = "Follow";
+      }
+    });
+  }
 
   // END FOLLOW/UNFOLLOW TOGGLE
 
   // BEGIN LIKE
 
   // Show read view and hide other views
-  document.querySelector(".tweet-footer").addEventListener("submit", event => like(event));
+  document.querySelector("#like-form").addEventListener("submit", event => like(event));
 
   function like(event) {
     event.preventDefault();
 
     // Get form info
-    const like_count = document.querySelector(".like").innerHTML;
+    let like = document.querySelector(".like");
+    let likeCount = parseInt(like.innerHTML);
+    const likeButton = document.querySelector("#like-button");
+    let postId = likeButton.getAttribute("data-value");
 
-    document.querySelector(".like").innerHTML = "0";
-    document.querySelector("#likeButton");
     fetch(`/network/like`, {
       method: "POST",
       headers: {
         "X-CSRFToken": csrftoken
       },
       mode: "same-origin", // Do not send CSRF token to another domain.
-      body: JSON.stringify({post_liked: post_id})
+      body: JSON.stringify({post_liked: postId})
     }).then(response => response.json()).then(result => {
       console.log(result);
+      likeCount++;
+      like.innerHTML = likeCount;
     });
     return false;
   }

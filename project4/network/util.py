@@ -1,4 +1,4 @@
-from .models import User, Post
+from .models import User, Post, Like
 from django.core.paginator import Paginator
 
 
@@ -47,3 +47,11 @@ def paginate(request, items):
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
     return page_obj
+
+
+def like_count():
+    tweets = Post.objects.all()
+    likes = {}
+    for tweet in tweets:
+        likes[tweet.id] = Like.objects.filter(post_liked=tweet.id).count()
+    return likes
