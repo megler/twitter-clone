@@ -19,11 +19,20 @@
           </p>
         </div>
         <div class="tweet-footer">
-          <a class="tweet-footer-btn">
-            <i class="octicon octicon-heart" aria-hidden="true"></i>
-            <span>
-              0</span>
-          </a>
+          <form id="like-form">
+            <script>
+              let csrf = "{{ csrf_token }}"
+              let post_id = "{{post.id}}"
+            </script>
+            <a class="tweet-footer-btn">
+              <label for="likeButton" class="btn pr-0">
+                <i class="octicon octicon-heart" aria-hidden="true"></i>
+              </label>
+              <input id="likeButton" type="submit" value="{{user.id}}" class="d-none"/>
+              <span class="like ml-0">
+                0</span>
+            </a>
+          </form>
         </div>
       </div>
     </li>

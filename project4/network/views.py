@@ -1,12 +1,12 @@
-import json
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 from .util import *
 from .models import User, Post, Like, Profile
+import json, traceback
 
 
 def index(request):
@@ -132,7 +132,7 @@ def user_following(request, pk):
     )
 
 
-# Functionality
+# Functionality views that didn't belong in utilities.
 
 
 def follow(request, id):
@@ -149,3 +149,23 @@ def unfollow(request, id):
         to_unfollow.followers.remove(request.user)
         to_unfollow.save()
         return user_profile(request, id)
+
+
+@login_required(login_url="login")
+def like(request):
+
+    # Get form data
+    data = json.loads(request.body)
+    post_id = data.get("post_liked", "")
+    post = Post.objects.get(pk=int(post_id))
+
+    if request.method == "POST":
+        try:
+            like = Like(user_liked=request.user, post_liked=post)
+            like.save()
+            return JsonResponse({"message": "Like successfully added."},
+                                status=201)
+        except BaseException as error:
+            print("An exception occurred: {}".format(error))
+    else:
+        return JsonResponse({"error": "POST request required."}, status=400)
