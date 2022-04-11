@@ -75,30 +75,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // BEGIN LIKE
 
-  // Show read view and hide other views
-  document.querySelector("#like-form").addEventListener("submit", event => like(event));
-
-  function like(event) {
-    event.preventDefault();
-
-    // Get form info
-    let like = document.querySelector(".like");
-    let likeCount = parseInt(like.innerHTML);
-    const likeButton = document.querySelector("#like-button");
-    let postId = likeButton.getAttribute("data-value");
-
+  function likeFunction(id) {
+    let postID = id;
     fetch(`/network/like`, {
       method: "POST",
       headers: {
         "X-CSRFToken": csrftoken
       },
+
       mode: "same-origin", // Do not send CSRF token to another domain.
-      body: JSON.stringify({post_liked: postId})
+      body: JSON.stringify({post_liked: postID})
     }).then(response => response.json()).then(result => {
       console.log(result);
-      likeCount++;
-      like.innerHTML = likeCount;
     });
     return false;
   }
+
+  let likeButton = document.querySelectorAll(".liked");
+  likeButton.forEach(element => {
+    element.addEventListener("click", () => {
+      likeFunction(element.dataset.value);
+    });
+  });
 });

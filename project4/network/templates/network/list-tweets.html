@@ -19,12 +19,12 @@
           </p>
         </div>
         <div class="tweet-footer">
-          <form id="like-form">
+          <form class="like-form">
             <a class="tweet-footer-btn">
               <label for="like-button" class="btn pr-0">
-                <i class="octicon octicon-heart" aria-hidden="true"></i>
+                <i class="octicon octicon-heart liked " aria-hidden="true" data-value="{{post.id}}"></i>
               </label>
-              <input id="like-button" type="submit" data-value="{{post.id}}" value="{{user.id}}" class="d-none"/>
+              <input type="submit" value="{{user.id}}" class="d-none"/>
               <span class="like ml-0">0</span>
             </a>
           </form>

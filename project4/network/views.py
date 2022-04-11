@@ -160,7 +160,6 @@ def like(request):
     # Get form data
     data = json.loads(request.body)
     post_id = data.get("post_liked", "")
-    print(post_id)
     post = Post.objects.get(pk=int(post_id))
     # Count Likes
     likes = Like.objects.filter(post_liked=int(post_id)).count()
@@ -175,3 +174,4 @@ def like(request):
             print("An exception occurred: {}".format(error))
     else:
         return JsonResponse({"error": "POST request required."}, status=400)
+    return HttpResponseRedirect(reverse("index"))
