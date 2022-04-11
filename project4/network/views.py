@@ -16,7 +16,6 @@ def index(request):
     tweets = sort_tweets(all_tweets)
     tweets = paginate(request, tweets)
     likes = like_count()
-
     return render(
         request,
         "network/index.html",
@@ -160,21 +159,30 @@ def unfollow(request, id):
 
 @login_required(login_url="login")
 def like(request):
-
     # Get form data
     data = json.loads(request.body)
     post_id = data.get("post_liked", "")
     post = Post.objects.get(pk=int(post_id))
-
+    user_who_likes = Like.objects.filter(user_liked=request.user.id,
+                                         post_liked=post)
     if request.method == "POST":
+        if not user_who_likes:
+            try:
+                like = Like(user_liked=request.user, post_liked=post)
+                like.save()
+                return JsonResponse({"message": "Like successfully added."},
+                                    status=201)
+            except BaseException as error:
+                print("An exception occurred: {}".format(error))
+        if user_who_likes:
+            try:
+                unlike = Like.objects.filter(user_liked=request.user,
+                                             post_liked=post).delete()
 
-        try:
-            like = Like(user_liked=request.user, post_liked=post)
-            like.save()
-            return JsonResponse({"message": "Like successfully added."},
-                                status=201)
-        except BaseException as error:
-            print("An exception occurred: {}".format(error))
+                return JsonResponse({"message": "Like successfully removed."},
+                                    status=201)
+            except BaseException as error:
+                print("An exception occurred: {}".format(error))
     else:
         return JsonResponse({"error": "POST request required."}, status=400)
     return HttpResponseRedirect(reverse("index"))

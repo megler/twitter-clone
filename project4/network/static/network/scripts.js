@@ -74,8 +74,10 @@ document.addEventListener("DOMContentLoaded", function () {
   // END FOLLOW/UNFOLLOW TOGGLE
 
   // BEGIN LIKE
+  user = parseInt(window.django.user.id);
+  likeObj = {};
 
-  function likeFunction(id) {
+  function likeFunction(id, user) {
     fetch(`/network/like`, {
       method: "POST",
       headers: {
@@ -87,8 +89,17 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log(result);
       let like = document.querySelector("#id-" + id);
       let likeCount = parseInt(like.innerHTML);
-      likeCount++;
-      like.innerHTML = likeCount;
+      if (Object.keys(likeObj).includes(id)) {
+        likeCount--;
+        like.innerHTML = likeCount;
+        delete likeObj[id];
+        console.log(likeObj);
+      } else {
+        likeCount++;
+        like.innerHTML = likeCount;
+        likeObj[id] = user;
+        console.log(likeObj);
+      }
     });
     return false;
   }
@@ -96,7 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let likeButton = document.querySelectorAll(".liked");
   likeButton.forEach(element => {
     element.addEventListener("click", () => {
-      likeFunction(element.dataset.value);
+      likeFunction(element.dataset.value, user);
     });
   });
 });
