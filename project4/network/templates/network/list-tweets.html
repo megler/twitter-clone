@@ -25,7 +25,11 @@
                 <i class="octicon octicon-heart liked " aria-hidden="true" data-value="{{post.id}}"></i>
               </label>
               <input type="submit" value="{{user.id}}" class="d-none"/>
-              <span class="like ml-0">0</span>
+              {% for key, value in likes.items %}
+                {% if key == post.id %}
+                  <span id="id-{{post.id}}" class="like ml-0">{{ value }}</span>
+                {% endif %}
+              {% endfor %}
             </a>
           </form>
         </div>

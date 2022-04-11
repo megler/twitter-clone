@@ -17,10 +17,14 @@ def index(request):
     tweets = paginate(request, tweets)
     likes = like_count()
 
-    return render(request, "network/index.html", {
-        "posts": tweets,
-        "likes": likes,
-    })
+    return render(
+        request,
+        "network/index.html",
+        {
+            "posts": tweets,
+            "likes": likes,
+        },
+    )
 
 
 def login_view(request):
@@ -161,10 +165,9 @@ def like(request):
     data = json.loads(request.body)
     post_id = data.get("post_liked", "")
     post = Post.objects.get(pk=int(post_id))
-    # Count Likes
-    likes = Like.objects.filter(post_liked=int(post_id)).count()
 
     if request.method == "POST":
+
         try:
             like = Like(user_liked=request.user, post_liked=post)
             like.save()

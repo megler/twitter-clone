@@ -76,17 +76,19 @@ document.addEventListener("DOMContentLoaded", function () {
   // BEGIN LIKE
 
   function likeFunction(id) {
-    let postID = id;
     fetch(`/network/like`, {
       method: "POST",
       headers: {
         "X-CSRFToken": csrftoken
       },
-
       mode: "same-origin", // Do not send CSRF token to another domain.
-      body: JSON.stringify({post_liked: postID})
+      body: JSON.stringify({post_liked: id})
     }).then(response => response.json()).then(result => {
       console.log(result);
+      let like = document.querySelector("#id-" + id);
+      let likeCount = parseInt(like.innerHTML);
+      likeCount++;
+      like.innerHTML = likeCount;
     });
     return false;
   }
