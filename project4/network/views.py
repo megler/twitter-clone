@@ -1,9 +1,10 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
+from django.core import serializers
 from .util import *
 from .models import User, Post, Like, Profile
 import json, traceback
@@ -16,6 +17,7 @@ def index(request):
     tweets = sort_tweets(all_tweets)
     tweets = paginate(request, tweets)
     likes = like_count()
+
     return render(
         request,
         "network/index.html",
@@ -126,6 +128,17 @@ def send_tweet(request, pk):
         return user_profile(request, pk)
 
 
+@login_required(login_url="login")
+def edit_tweet(request):
+    data = json.loads(request.body)
+    id = data.get("id", "")
+    body = data.get("post_body", "")
+    edited_tweet = Post.objects.get(pk=int(id))
+    edited_tweet.post_body = body
+    edited_tweet.save()
+    return JsonResponse({"status": 201})
+
+
 # Inspiration credit: https://stackoverflow.com/questions/53803106/django-query-how-to-find-all-posts-from-people-you-follow
 @login_required(login_url="login")
 def user_following(request, pk):
@@ -172,19 +185,24 @@ def like(request):
             try:
                 like = Like(user_liked=request.user, post_liked=post)
                 like.save()
-                return JsonResponse({"message": "Like successfully added."},
-                                    status=201)
+                return JsonResponse({"message": "Successful"}, status=201)
             except BaseException as error:
                 print("An exception occurred: {}".format(error))
         if user_who_likes:
             try:
-                unlike = Like.objects.filter(user_liked=request.user,
-                                             post_liked=post).delete()
+                Like.objects.filter(user_liked=request.user,
+                                    post_liked=post).delete()
 
-                return JsonResponse({"message": "Like successfully removed."},
-                                    status=201)
+                return JsonResponse({"message": "Successful"}, status=201)
             except BaseException as error:
                 print("An exception occurred: {}".format(error))
     else:
         return JsonResponse({"error": "POST request required."}, status=400)
     return HttpResponseRedirect(reverse("index"))
+
+
+# Credit: https://stackoverflow.com/questions/16640021/django-object-is-not-iterable-using-serializers-serialize
+def get_tweet(request, id):
+    id = int(id)
+    data = serializers.serialize("json", Post.objects.filter(pk=id))
+    return HttpResponse(data)

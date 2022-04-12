@@ -233,7 +233,7 @@ body {
   }
   
   .tweet-footer-btn {
-    margin-right: 30px;
+    margin-right: .5rem;
   }
   .tweet-footer-btn i, .tweet-footer-btn span {
     color: #657786;
@@ -451,3 +451,12 @@ body {
   height: 4rem;
 }
 
+.edit-tweet-icon::before {
+  margin-right: .2rem;
+  font-size: 16px;
+  color:#657786;
+}
+
+.tweet-edit-form {
+  display: none;
+}

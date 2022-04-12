@@ -16,4 +16,6 @@ urlpatterns = [
          name="user_following"),
     # API
     path("network/like", views.like, name="like"),
+    path("network/get-tweet/<int:id>", views.get_tweet, name="get_tweet"),
+    path("network/edit-tweet", views.edit_tweet, name="edit_tweet"),
 ]

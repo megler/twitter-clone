@@ -111,5 +111,53 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // END LIke
+  // END LIKE
+
+  // BEGIN EDIT TWEET FUNCTIONS
+
+  const submitEdit = event => {
+    event.preventDefault();
+    let id = event.currentTarget.attributes.tweetID.value;
+    let tweetBody = document.querySelector(`[data-tweet="${id}"]`);
+    let tweetEditArea = document.querySelector(`[data-edit="${id}"]`);
+    const body = document.querySelector("#body-" + id).value;
+    fetch(`/network/edit-tweet`, {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": csrftoken
+      },
+      mode: "same-origin", // Do not send CSRF token to another domain.
+      body: JSON.stringify({id: id, post_body: body})
+    }).then(response => response.json()).then(result => {
+      console.log(result);
+      tweetBody.style.display = "block";
+      tweetEditArea.style.display = "none";
+      let editTweetBody = document.querySelector(`[data-edited="${id}"]`);
+      editTweetBody.innerHTML = body;
+    });
+    return false;
+  };
+
+  const createTweetEditArea = tweetID => {
+    // step 1 create text box
+    let tweetBody = document.querySelector(`[data-tweet="${tweetID}"]`);
+    let tweetEditArea = document.querySelector(`[data-edit="${tweetID}"]`);
+    tweetBody.style.display = "none";
+    tweetEditArea.style.display = "block";
+    // step 2 fill text box with tweet to be edited
+    fetch(`/network/get-tweet/${tweetID}`).then(response => response.json()).then(tweetRes => {
+      document.querySelector("#body-" + tweetID).value += tweetRes[0]["fields"]["post_body"];
+    });
+    // step 3 submit the new form
+    const form = document.querySelector("#form-" + tweetID);
+    form.setAttribute("tweetID", tweetID);
+    form.addEventListener("submit", submitEdit);
+  };
+
+  let tweetEditLink = document.querySelectorAll(".edit-tweet-icon");
+  tweetEditLink.forEach(element => {
+    element.addEventListener("click", () => {
+      createTweetEditArea(element.dataset.id);
+    });
+  });
 });

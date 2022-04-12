@@ -15,8 +15,9 @@
           <img class="tweet-card-avatar" src="https://pbs.twimg.com/profile_images/679974972278849537/bzzb-6H4_bigger.jpg" alt="">
         </a>
         <div class="tweet-text">
-          <p class="" lang="es" data-aria-label-part="0">{{post.post_body}}
+          <p class="tweet-body" data-tweet="{{post.id}}" data-edited="{{post.id}}" lang="es" data-aria-label-part="0">{{post.post_body}}
           </p>
+          <p>{% include "network/edit-tweet.html" %}</p>
         </div>
         <div class="tweet-footer">
           <form class="like-form">
@@ -31,6 +32,11 @@
                 {% endif %}
               {% endfor %}
             </a>
+            {% if user.is_authenticated and user == post.author %}
+              <a class="edit">
+                <i class="fa fa-pencil-square-o edit-tweet-icon" aria-hidden="true" data-user="{{post.author.id}}" data-id="{{post.id}}">Edit</i>
+              </a>
+            {% endif %}
           </form>
         </div>
       </div>
@@ -40,7 +46,7 @@
   {% endfor %}
 </ol>
 <!--Pagination-->
-<nav aria-label="Page navigation example">
+<nav aria-label=" Page navigation example">
   <ul class="pagination justify-content-center">
     {% if posts.has_previous %}
       <li class="page-item">

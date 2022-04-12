@@ -1,0 +1,12 @@
+<div class="wrapper tweet-edit-form" data-edit="{{post.id}}">
+  <form id="form-{{post.id}}">
+    <div class="form-group">
+      <textarea required="true" aria-label="Edit Your Tweet" id="body-{{post.id}}" data-body='{{post.id}}' class="form-control" name="tweet_body" rows="3"></textarea>
+    </div>
+    <div class="bottom">
+      <div class="content">
+        <button type="submit" class="btn btn-primary" id="submit-{{post.id}}">Submit</button>
+      </div>
+    </div>
+  </form>
+</div>
