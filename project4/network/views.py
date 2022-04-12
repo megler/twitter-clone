@@ -91,6 +91,7 @@ def user_profile(request, pk):
     tweets = sort_tweets(specific_tweets)
     tweets = paginate(request, tweets)
     num_tweets = tweet_count(pk)
+    likes = like_count()
 
     # get a suggested follower list and limit to 10
     if request.user.is_authenticated:
@@ -104,6 +105,7 @@ def user_profile(request, pk):
         request,
         "network/profile.html",
         {
+            "likes": likes,
             "tweet_count": num_tweets,
             "is_following": is_following,
             "user_follows": user_following_count,
@@ -138,7 +140,7 @@ def user_following(request, pk):
     )
 
 
-# Functionality views that didn't belong in utilities.
+# Functionality views that didn't belong in utilities.py
 
 
 def follow(request, id):

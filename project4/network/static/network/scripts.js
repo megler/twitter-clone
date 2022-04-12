@@ -74,7 +74,9 @@ document.addEventListener("DOMContentLoaded", function () {
   // END FOLLOW/UNFOLLOW TOGGLE
 
   // BEGIN LIKE
-  user = parseInt(window.django.user.id);
+  // Credit object manipulation: https://stackoverflow.com/questions/35099779/javascript-if-a-value-exists-in-an-object
+
+  user = document.querySelector('input[type="submit"][value="user.id"]');
   likeObj = {};
 
   function likeFunction(id, user) {
@@ -93,12 +95,10 @@ document.addEventListener("DOMContentLoaded", function () {
         likeCount--;
         like.innerHTML = likeCount;
         delete likeObj[id];
-        console.log(likeObj);
       } else {
         likeCount++;
         like.innerHTML = likeCount;
         likeObj[id] = user;
-        console.log(likeObj);
       }
     });
     return false;
@@ -110,4 +110,6 @@ document.addEventListener("DOMContentLoaded", function () {
       likeFunction(element.dataset.value, user);
     });
   });
+
+  // END LIke
 });
