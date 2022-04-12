@@ -115,11 +115,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // BEGIN EDIT TWEET FUNCTIONS
 
+  const editToggle = id => {
+    let tweetBody = document.querySelector(`[data-tweet="${id}"]`);
+    let tweetEditArea = document.querySelector(`[data-edit="${id}"]`);
+
+    if (tweetBody.style.display === "block") {
+      tweetBody.style.display = "none";
+      tweetEditArea.style.display = "block";
+    } else {
+      tweetBody.style.display = "block";
+      tweetEditArea.style.display = "none";
+    }
+  };
+
   const submitEdit = event => {
     event.preventDefault();
     let id = event.currentTarget.attributes.tweetID.value;
-    let tweetBody = document.querySelector(`[data-tweet="${id}"]`);
-    let tweetEditArea = document.querySelector(`[data-edit="${id}"]`);
+
     const body = document.querySelector("#body-" + id).value;
     fetch(`/network/edit-tweet`, {
       method: "POST",
@@ -130,8 +142,7 @@ document.addEventListener("DOMContentLoaded", function () {
       body: JSON.stringify({id: id, post_body: body})
     }).then(response => response.json()).then(result => {
       console.log(result);
-      tweetBody.style.display = "block";
-      tweetEditArea.style.display = "none";
+      editToggle(id);
       let editTweetBody = document.querySelector(`[data-edited="${id}"]`);
       editTweetBody.innerHTML = body;
     });
@@ -140,13 +151,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const createTweetEditArea = tweetID => {
     // step 1 create text box
-    let tweetBody = document.querySelector(`[data-tweet="${tweetID}"]`);
-    let tweetEditArea = document.querySelector(`[data-edit="${tweetID}"]`);
-    tweetBody.style.display = "none";
-    tweetEditArea.style.display = "block";
+    editToggle(tweetID);
     // step 2 fill text box with tweet to be edited
     fetch(`/network/get-tweet/${tweetID}`).then(response => response.json()).then(tweetRes => {
-      document.querySelector("#body-" + tweetID).value += tweetRes[0]["fields"]["post_body"];
+      document.querySelector("#body-" + tweetID).value = tweetRes[0]["fields"]["post_body"];
     });
     // step 3 submit the new form
     const form = document.querySelector("#form-" + tweetID);
