@@ -1,5 +1,9 @@
 {% extends "network/layout.html" %}
 
+{% block avatar %}
+  {% include "network/components/other-users-avatar.html" %}
+{% endblock avatar%}
+
 <!-- BEGIN STATS BAR -->
 {% block stats%}
   {% include "network/components/user-stats.html" %}

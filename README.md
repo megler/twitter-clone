@@ -14,6 +14,9 @@ the opportunity to see more users with each refresh.
 present multiple pages if necessary.
 6. Gravatars in comments are user specific. If user has a registered Gravatar it 
 will be used, otherwise a generic will show up.
+7. If a visitor is not logged in, they will see a user's username, but will not
+be able to click it. Once they register/login they will be able to click a username 
+(eg. @megler) and be taken to their profile.
 
 ## New User Registration
 If a new user would like to have a background image, it can be done at time of 

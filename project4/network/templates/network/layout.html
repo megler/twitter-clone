@@ -1,5 +1,5 @@
 {% load static %}
-
+{% load app_tags %}
 <!DOCTYPE html>
 <html lang="en">
   {# Template Credit: https://github.com/jvadillo/twitter-bootstrap #}
@@ -80,7 +80,11 @@
           <div class="container">
             <!-- User main avatar -->
             <div class="avatar-container">
-              <div class="avatar"></div>
+              {% if not user.is_authenticated %}
+                <div class="avatar"></div>
+              {% else %}
+                {% block avatar %}{% endblock avatar %}
+              {% endif %}
             </div>
           </div>
         </div>

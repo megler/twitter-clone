@@ -1,4 +1,5 @@
 {% load app_tags %}
+
 <ol class="tweet-list">
   {% for post in posts %}
     <li class="tweet-card">
@@ -7,8 +8,12 @@
           <span class="fullname">
             <strong>{{post.author.first_name}}</strong>
           </span>
-          <a href="{% url 'user_profile' pk=post.author.id %}">
-            <span class="username">@{{post.author.username}}</span></a>
+          {% if user.is_authenticated %}
+            <a href="{% url 'user_profile' pk=post.author.id %}">
+              <span class="username">@{{post.author.username}}</span></a>
+          {% else %}
+            <span class="username">@{{post.author.username}}</span>
+          {% endif %}
           <span class="tweet-time">-
             {{post.date_created}}</span>
         </div>
