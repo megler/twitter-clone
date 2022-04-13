@@ -98,14 +98,14 @@ def user_profile(request, pk):
     tweets = paginate(request, tweets)
     num_tweets = tweet_count(pk)
     likes = like_count()
+    is_following = confirm_user_follows(request, pk)
 
     # get a suggested follower list and limit to 10
     if request.user.is_authenticated:
         other_users = who_to_follow(request)[:10]
 
     # get followers/following count from util.py
-    user_following_count, user_followed_by_count, is_following = follow_nums(
-        user_profile_id)
+    user_following_count, user_followed_by_count = follow_nums(user_profile_id)
 
     return render(
         request,

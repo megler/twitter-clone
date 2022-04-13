@@ -19,13 +19,26 @@ def who_to_follow(request):
     return shuffled
 
 
+def confirm_user_follows(request, user_id):
+    """Returns if user is following a specific person"""
+
+    follows = User.objects.all()
+    for user in follows:
+        if request.user == user:
+            people_following_user = user.followed_by.filter(user_id=user_id)
+            if people_following_user:
+                is_following = True
+            else:
+                is_following = False
+    return is_following
+
+
 def follow_nums(user_id):
     """Returns who the user is following, who is following the user and is_following boolean"""
     # Get all users to create iterable
     follows = User.objects.all()
     user_followed_by_count = 0
     user_following_count = 0
-    is_following = False
 
     # Loop over users
     for user in follows:
@@ -36,12 +49,12 @@ def follow_nums(user_id):
         # Who the user is following
         if user == user_id and user_following.count() > 0:
             user_following_count = user_following.count()
-            is_following = True
+
         # Who is following the user
         if user == user_id and people_following_user.count() > 0:
             user_followed_by_count = people_following_user.count()
 
-    return (user_followed_by_count, user_following_count, is_following)
+    return (user_followed_by_count, user_following_count)
 
 
 def tweet_count(user_id):
