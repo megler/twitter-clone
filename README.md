@@ -2,7 +2,6 @@
 
 A Twitter Clone utilizing Django and Javascript.
 
-
 ## Features
 
 1. If the visitor is not logged in, they will see a listing of all tweets.
@@ -15,6 +14,13 @@ the opportunity to see more users with each refresh.
 present multiple pages if necessary.
 6. Gravatars in comments are user specific. If user has a registered Gravatar it 
 will be used, otherwise a generic will show up.
+
+## New User Registration
+If a new user would like to have a background image, it can be done at time of 
+registration. This is optional, but if you'd like to have an image, feel free to
+copy the URL of one of the images listed below in Image Credits. Otherwise, use
+an image url whose image is landscape oriented and prefrably has a long side of 
+at least 2k pixels.
 
 ## Util.py
 Any function in views.py that are not views are found in util.py in order to keep
