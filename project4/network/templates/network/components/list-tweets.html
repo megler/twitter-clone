@@ -1,3 +1,4 @@
+{% load app_tags %}
 <ol class="tweet-list">
   {% for post in posts %}
     <li class="tweet-card">
@@ -12,7 +13,7 @@
             {{post.date_created}}</span>
         </div>
         <a>
-          <img class="tweet-card-avatar" src="https://pbs.twimg.com/profile_images/679974972278849537/bzzb-6H4_bigger.jpg" alt="">
+          <img class="tweet-card-avatar" src="{{ post.author|gravatar:50 }}" alt="">
         </a>
         <div class="tweet-text">
           <p class="tweet-body" data-tweet="{{post.id}}" data-edited="{{post.id}}" lang="es" data-aria-label-part="0">{{post.post_body}}

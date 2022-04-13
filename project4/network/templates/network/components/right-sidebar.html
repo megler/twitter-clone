@@ -1,3 +1,4 @@
+{% load app_tags %}
 <div class="col right-col">
   <div class="content-panel">
     <div class="panel-header text-center">
@@ -10,7 +11,7 @@
         {% for other_users in follow_suggestions %}
           <li class="tweet-card">
             <div class="tweet-content">
-              <img class="tweet-card-avatar" src="https://pbs.twimg.com/profile_images/679974972278849537/bzzb-6H4_bigger.jpg" alt="">
+              <img class="tweet-card-avatar" src="{{ other_users|gravatar:50 }}" alt="">
               <div class="tweet-header">
                 <span class="profile-fullname">
                   <strong>{{other_users.first_name}}</strong>
