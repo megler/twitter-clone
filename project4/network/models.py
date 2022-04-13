@@ -12,12 +12,12 @@ class User(AbstractUser):
 
 # Credit for User Model Extension: https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html#onetoone
 class Profile(models.Model):
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     background_image = models.URLField(null=True)
     date_joined = models.DateField(auto_now=False,
                                    auto_now_add=False,
-                                   null=True,
-                                   blank=True,
+                                   null=False,
                                    default=now)
     followers = models.ManyToManyField(User,
                                        blank=True,
