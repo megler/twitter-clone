@@ -2,13 +2,13 @@
 
 <!-- BEGIN STATS BAR -->
 {% block stats%}
-  {% include "network/user-stats.html" %}
+  {% include "network/components/user-stats.html" %}
 {% endblock stats%}
 <!-- END STATS BAR -->
 
 <!-- BEGIN Left column -->
 {% block left-sidebar %}
-  {% include "network/left-sidebar.html" %}
+  {% include "network/components/left-sidebar.html" %}
 {% endblock left-sidebar%}
 <!-- END Left column -->
 
@@ -16,11 +16,11 @@
   <!-- BEGIN Center content column -->
 
   <!-- Begin Send Tweet Box/Form -->
-  {% include "network/tweet-form.html" %}
+  {% include "network/components/tweet-form.html" %}
   <!-- END Tweet Box -->
 
   <!-- BEGIN TWEET LIST-->
-  {% include "network/list-tweets.html" %}
+  {% include "network/components/list-tweets.html" %}
   <!-- END: TWEET LIST -->
 
   <!-- END: Center content column -->
@@ -28,6 +28,6 @@
 {% endblock %}
 <!-- BEGIN RIGHT SIDEBAR -->
 {% block right-sidebar %}
-  {% include "network/right-sidebar.html" %}
+  {% include "network/components/right-sidebar.html" %}
 {% endblock right-sidebar%}
 <!-- END RIGHT SIDEBAR -->
