@@ -10,6 +10,10 @@ The original technique has six steps:
 Any function in views.py that are not views are found in util.py in order to keep
 views as lean as possible.
 
+## Edit
+// NOTE: It appears you have to doubleclick to get the event to fire. I have
+  // not been able to find out why this happens.
+
 ## Code Credits
 Most code requiring credit is notated inline, but a few are not.
 
