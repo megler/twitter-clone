@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   // BEGIN TRANSITION TOGGLE
   // Credit for CSS/JS Animation Toggle: https://jsfiddle.net/gebpjo1L/18/
+  // I did not write this animation code.
 
   let container = document.querySelector(".toggleBox");
   let button = document.querySelector(".toggle");
@@ -41,8 +42,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // ***************  CUSTOM CODE *****************
 
-  // From Django docs to deal with CSRF token
-  function getCookie(name) {
+  /**
+     * getCookie takes 1 argument and is from the Django docs to deal with CSRF token.
+     * https://docs.djangoproject.com/en/4.0/ref/csrf/
+     */
+  const getCookie = name => {
     let cookieValue = null;
     if (document.cookie && document.cookie !== "") {
       const cookies = document.cookie.split(";");
@@ -56,10 +60,11 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
     return cookieValue;
-  }
+  };
   let csrftoken = getCookie("csrftoken");
 
   // BEGIN FOLLOW/UNFOLLOW TOGGLE
+
   const followBtn = document.querySelector(".follow-toggle");
   if (followBtn) {
     followBtn.addEventListener("click", () => {
@@ -79,7 +84,18 @@ document.addEventListener("DOMContentLoaded", function () {
   user = document.querySelector('input[type="submit"][value="user.id"]');
   likeObj = {};
 
-  function likeFunction(id, user) {
+  /**
+     * likeFunction takes 2 arguments. When a user clicks like via the click
+     * listener outside the function, a POST request is sent to the backend (like view).
+     * On a successful response, the user and tweet id are pushed to likeObj to track
+     * if user has previously liked/unliked this specific tweet. If tweet is liked,
+     * likeCount is incemented by 1 and that count is displayed on user's screen. If
+     * the same user clicks again, then the like is de-incremented, displayed, and that
+     * like is removed from likeObj.
+     * @param {string} [id] is tweet id.
+     * @param {string} [user] is userid.
+     */
+  const likeFunction = (id, user) => {
     fetch(`/network/like`, {
       method: "POST",
       headers: {
@@ -102,8 +118,9 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
     return false;
-  }
+  };
 
+  // Event listener on all tweets waiting for like button to be clicked
   let likeButton = document.querySelectorAll(".liked");
   likeButton.forEach(element => {
     element.addEventListener("click", () => {
@@ -115,6 +132,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // BEGIN EDIT TWEET FUNCTIONS
 
+  /**
+     * editToggle takes 1 argument toggles whether a tweet block is show or if a
+     * texarea is displayed for editing that specific tweet.
+     * @param {string} [id] the tweet id that identifies the div being manipulated.
+     */
   const editToggle = id => {
     let tweetBody = document.querySelector(`[data-tweet="${id}"]`);
     let tweetEditArea = document.querySelector(`[data-edit="${id}"]`);
@@ -128,6 +150,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   };
 
+  /**
+     * submitEdit takes 1 argument and sends a POST request to the server
+     * (edit_tweet view) containing the content of the edited tweet. It then
+     * called editToggle to toggle the view for the user and displays the updated
+     * tweet text.
+     * @param {object} [event] is the event passed from the event listener in
+     * createTweetEditArea function.
+     */
   const submitEdit = event => {
     event.preventDefault();
     let id = event.currentTarget.attributes.tweetID.value;
@@ -149,6 +179,15 @@ document.addEventListener("DOMContentLoaded", function () {
     return false;
   };
 
+  /**
+     * createTweetEditArea takes 1 argument and begins the 3 step process of allowing
+     * a user to edit their tweet.
+     * Step 1 calls editToggle to display a textarea.
+     * Step 2 fetches the original text from the server and displays it.
+     * Step 3 instantiates a event listener to listen for a submit event and call
+     * the submitEdit function.
+     * @param {string} [tweetID] the id if the tweet being edited.
+     */
   const createTweetEditArea = tweetID => {
     // step 1 create text box
     editToggle(tweetID);
@@ -162,6 +201,7 @@ document.addEventListener("DOMContentLoaded", function () {
     form.addEventListener("submit", submitEdit);
   };
 
+  // click listener for all tweets listening for "edit" click.
   let tweetEditLink = document.querySelectorAll(".edit-tweet-icon");
   tweetEditLink.forEach(element => {
     element.addEventListener("click", () => {

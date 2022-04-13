@@ -29,6 +29,7 @@ def index(request):
 
 
 def login_view(request):
+    """Allow registered user to login"""
     if request.method == "POST":
 
         # Attempt to sign user in
@@ -51,11 +52,13 @@ def login_view(request):
 
 
 def logout_view(request):
+    """Allow registered user to logout"""
     logout(request)
     return HttpResponseRedirect(reverse("index"))
 
 
 def register(request):
+    """Allow unregistered user to register"""
     if request.method == "POST":
         username = request.POST["username"]
         email = request.POST["email"]
@@ -88,6 +91,7 @@ def register(request):
 
 
 def user_profile(request, pk):
+    """Returns a user profile page for a specific user"""
     user_profile_id = User.objects.get(pk=pk)
     specific_tweets = Post.objects.filter(author__id=pk)
     tweets = sort_tweets(specific_tweets)
@@ -119,7 +123,9 @@ def user_profile(request, pk):
     )
 
 
+@login_required(login_url="login")
 def send_tweet(request, pk):
+    """Allows an authenticated user to send a tweet"""
     if request.method == "POST":
         user = User.objects.get(pk=request.user.id)
         tweet_body = request.POST["tweet_body"]
@@ -130,6 +136,7 @@ def send_tweet(request, pk):
 
 @login_required(login_url="login")
 def edit_tweet(request):
+    """Allows an authenticated user to edit their own tweet."""
     data = json.loads(request.body)
     id = data.get("id", "")
     body = data.get("post_body", "")
@@ -142,6 +149,7 @@ def edit_tweet(request):
 # Inspiration credit: https://stackoverflow.com/questions/53803106/django-query-how-to-find-all-posts-from-people-you-follow
 @login_required(login_url="login")
 def user_following(request, pk):
+    """Returns a list of who the user is following and those user's tweets."""
     followed_people = Profile.objects.filter(followers__id=pk).values("user")
     tweets = Post.objects.filter(author__in=followed_people)
     tweets = sort_tweets(tweets)
@@ -157,6 +165,7 @@ def user_following(request, pk):
 
 
 def follow(request, id):
+    """Functionality to follow a user"""
     if request.method == "POST":
         to_follow = Profile.objects.get(user=id)
         to_follow.followers.add(request.user)
@@ -165,6 +174,7 @@ def follow(request, id):
 
 
 def unfollow(request, id):
+    """Functionality to unfollow a user"""
     if request.method == "POST":
         to_unfollow = Profile.objects.get(user=id)
         to_unfollow.followers.remove(request.user)
@@ -174,6 +184,7 @@ def unfollow(request, id):
 
 @login_required(login_url="login")
 def like(request):
+    """Functionality to like a user"""
     # Get form data
     data = json.loads(request.body)
     post_id = data.get("post_liked", "")
@@ -203,6 +214,8 @@ def like(request):
 
 # Credit: https://stackoverflow.com/questions/16640021/django-object-is-not-iterable-using-serializers-serialize
 def get_tweet(request, id):
+    """Allows js to pre-fill the edit tweet function with a user's tweet so it
+    can be edited."""
     id = int(id)
     data = serializers.serialize("json", Post.objects.filter(pk=id))
     return HttpResponse(data)

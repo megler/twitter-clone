@@ -1,5 +1,6 @@
 from .models import User, Post, Like
 from django.core.paginator import Paginator
+import random
 
 
 def sort_tweets(what_to_sort):
@@ -9,11 +10,17 @@ def sort_tweets(what_to_sort):
 
 
 def who_to_follow(request):
-    users = User.objects.exclude(pk=request.user.id)
-    return users
+    """Get all users, remove signed in user by ID, shuffle the list and return it"""
+    ids = [i.id for i in User.objects.all()]
+    if request.user.id in ids:
+        ids.remove(request.user.id)
+    random.shuffle(ids)
+    shuffled = [User.objects.get(id=i) for i in ids]
+    return shuffled
 
 
 def follow_nums(user_id):
+    """Returns who the user is following, who is following the user and is_following boolean"""
     # Get all users to create iterable
     follows = User.objects.all()
     user_followed_by_count = 0
@@ -38,11 +45,13 @@ def follow_nums(user_id):
 
 
 def tweet_count(user_id):
+    """Returns number of tweets a user has"""
     posts = Post.objects.filter(author__pk=user_id)
     return posts.count()
 
 
 def paginate(request, items):
+    """Django paginate functions. Limits tweets to 10 per page"""
     paginator = Paginator(items, 10)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
@@ -50,6 +59,7 @@ def paginate(request, items):
 
 
 def like_count():
+    """Counts the number of likes for each tweet"""
     tweets = Post.objects.all()
     likes = {}
     for tweet in tweets:
