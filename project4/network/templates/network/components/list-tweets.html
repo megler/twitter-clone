@@ -24,7 +24,7 @@
           <form class="like-form">
             <a class="tweet-footer-btn">
               <label for="like-button" class="btn pr-0">
-                <i class="octicon octicon-heart liked " aria-hidden="true" data-value="{{post.id}}"></i>
+                <i id="heart-{{post.id}}" class="octicon octicon-heart liked " aria-hidden="true" data-value="{{post.id}}"></i>
               </label>
               <input type="submit" value="{{user.id}}" class="d-none"/>
               {% for key, value in likes.items %}
