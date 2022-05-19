@@ -29,9 +29,6 @@ at least 2k pixels.
 Any function in views.py that are not views are found in util.py in order to keep
 views as lean as possible.
 
-## Edit
-It appears you have to doubleclick to get the event to fire. I have not been able 
-to find out why this happens.
 
 ## Code Credits
 Most code requiring credit is notated inline, but a few are not.
@@ -48,6 +45,7 @@ Most code requiring credit is notated inline, but a few are not.
 [Cats](https://images.pexels.com/photos/4492163/pexels-photo-4492163.jpeg?cs=srgb&dl=pexels-aleksandr-nadyojin-4492163.jpg&fm=jpg)
 [Chihuahua](https://images.pexels.com/photos/4378919/pexels-photo-4378919.jpeg?cs=srgb&dl=pexels-ellie-burgin-4378919.jpg&fm=jpg)
 [Birds](https://images.pexels.com/photos/1435849/pexels-photo-1435849.jpeg?cs=srgb&dl=pexels-engin-akyurt-1435849.jpg&fm=jpg)
+[Lake](https://www.pexels.com/photo/lake-and-mountain-417074/)
 
 ## License
 
